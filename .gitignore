@@ -1,0 +1,32 @@
+# Claude Code
+.claude/
+Claude.md
+
+# Java / Maven
+backend/target/
+*.class
+*.jar
+*.log
+
+# Angular / Node
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+npm-debug.log*
+
+# IntelliJ
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+# Variables de entorno
+.env
+*.env.local
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store

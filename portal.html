@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte - Tu IT, sin sustos 💖</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta "Girly / Soft Tech" en tonos Lila y Morado
+                        'brand-bg': '#faf5ff', // Fondo principal lila muy pálido
+                        'brand-text-dark': '#4c1d95', // Texto principal (violeta oscuro)
+                        'brand-text-muted': '#7e22ce', // Texto secundario (púrpura)
+                        'brand-purple': '#a855f7', // Morado/Lila clásico
+                        'brand-lilac': '#c084fc', // Lila cálido
+                        'brand-lavender': '#e9d5ff', // Lavanda claro para detalles
+                    },
+                    fontFamily: {
+                        // Poppins da un toque mucho más amigable y redondo
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-primary': 'linear-gradient(135deg, #a855f7 0%, #c084fc 100%)',
+                        'gradient-text': 'linear-gradient(to right, #7e22ce, #9333ea)',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Importando fuente Poppins de Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            background-color: #faf5ff;
+            color: #4c1d95;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Subrayado estilo marcador grueso/suave */
+        .underline-marker {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+        .underline-marker::after {
+            content: '';
+            position: absolute;
+            left: -2%;
+            bottom: 4px;
+            width: 104%;
+            height: 12px;
+            background-color: #e9d5ff; /* Lavanda pastel */
+            z-index: -1;
+            border-radius: 6px;
+            transform: rotate(-1deg);
+        }
+
+        /* Efecto Glassmorphism suave */
+        .glass {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col items-center selection:bg-purple-200 selection:text-purple-900">
+    
+    <!-- Elementos flotantes de fondo (Blobs) -->
+    <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <!-- Mancha Lila Arriba Izquierda -->
+        <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <!-- Mancha Fucsia suave Arriba Derecha -->
+        <div class="absolute top-[20%] right-[-5%] w-96 h-96 bg-fuchsia-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" style="animation-delay: 2s;"></div>
+        <!-- Mancha Violeta Abajo Centro -->
+        <div class="absolute bottom-[-20%] left-[20%] w-[40rem] h-[40rem] bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" style="animation-delay: 4s;"></div>
+    </div>
+
+    <!-- Navbar (Estilo flotante tipo cápsula) -->
+    <nav class="w-full max-w-5xl mx-auto px-6 py-4 mt-4 relative z-10">
+        <div class="glass rounded-full px-6 py-3 flex justify-between items-center shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <!-- Logo -->
+            <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                    <!-- Ícono del logo (Más suave y redondo) -->
+                    <div class="w-8 h-8 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-md shadow-purple-200">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight text-brand-text-dark">Soporte✨</span>
+                </div>
+            </div>
+
+            <!-- Enlaces de Navegación -->
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-brand-text-muted">
+                <a href="#" class="hover:text-brand-purple transition-colors">Servicios</a>
+                <a href="#" class="hover:text-brand-purple transition-colors">Planes</a>
+                <a href="#" class="hover:text-brand-purple transition-colors">Casos</a>
+                <a href="#" class="hover:text-brand-purple transition-colors">FAQs</a>
+                <a href="#" class="hover:text-brand-purple transition-colors">Contacto</a>
+            </div>
+
+            <!-- Botón CTA Navbar -->
+            <button class="hidden md:block bg-gradient-primary text-white font-semibold text-sm px-6 py-2.5 rounded-full transition-all hover:shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:-translate-y-0.5">
+                Diagnóstico gratuito
+            </button>
+
+            <!-- Menú Hamburguesa -->
+            <button class="md:hidden text-brand-text-dark p-2 bg-white rounded-full shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal (Hero) -->
+    <main class="flex-1 w-full flex flex-col items-center justify-center px-6 mt-12 md:mt-20 relative z-10 text-center max-w-4xl mx-auto mb-20">
+        
+        <!-- Píldora "Servicios IT" -->
+        <div class="inline-flex items-center gap-2 bg-white/80 border border-purple-100 rounded-full px-5 py-2 mb-8 shadow-sm backdrop-blur-sm">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+            </span>
+            <span class="text-xs md:text-sm text-brand-text-muted font-medium">Servicios IT para PYMEs en Guatemala</span>
+        </div>
+
+        <!-- Título Principal -->
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-brand-text-dark mb-8 leading-[1.2]">
+            Tu IT, <span class="underline-marker">sin sustos.</span>
+        </h1>
+
+        <!-- Párrafo Descriptivo -->
+        <p class="text-lg md:text-xl text-brand-text-muted mb-10 max-w-3xl mx-auto leading-relaxed font-light">
+            Mantenemos funcionando los sistemas que tu empresa usa todos los días. Soporte técnico, servidores, correo corporativo y telefonía IP — con respuesta rápida y <b>sin complicaciones.</b>
+        </p>
+
+        <!-- Texto "Operado por" (Versión cute) -->
+        <div class="flex items-center justify-center gap-2 mb-12 text-sm text-brand-text-muted/70 bg-white/50 px-4 py-2 rounded-full border border-purple-50">
+            <span>Operado con 💜 por</span>
+            <div class="flex items-center text-brand-text-dark font-semibold">
+                Dataxa
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="flex flex-col sm:flex-row items-center gap-5 w-full justify-center">
+            <!-- Botón Principal -->
+            <button class="w-full sm:w-auto bg-gradient-primary text-white font-bold text-base px-8 py-4 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-1 flex items-center justify-center gap-2 group">
+                Solicitar diagnóstico gratuito
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5 group-hover:translate-x-1 transition-transform">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </button>
+            
+            <!-- Botón Secundario (Outline suave) -->
+            <button class="w-full sm:w-auto bg-white text-brand-text-dark font-semibold text-base px-8 py-4 rounded-full transition-all border-2 border-purple-100 hover:border-purple-300 hover:bg-purple-50 flex items-center justify-center shadow-sm">
+                Ver servicios detallados
+            </button>
+        </div>
+        
+        <!-- Trust indicators (mini iconos decorativos abajo) -->
+        <div class="mt-16 flex items-center justify-center gap-8 text-purple-300 opacity-70">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+        </div>
+    </main>
+
+    <!-- Botón Flotante de Chat (Más cute) -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button class="bg-gradient-primary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(168,85,247,0.4)] transition-all hover:scale-110 hover:rotate-3">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8">
+                <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd" />
+            </svg>
+            <!-- Puntito indicador en línea -->
+            <span class="absolute top-0 right-0 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white"></span>
+        </button>
+    </div>
+
+</body>
+</html>

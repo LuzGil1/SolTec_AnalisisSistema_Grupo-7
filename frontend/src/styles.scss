@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #faf5ff;
+  color: #4c1d95;
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+// Subrayado estilo marcador grueso/suave, usado en los titulos principales
+.underline-marker {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: -2%;
+    bottom: 4px;
+    width: 104%;
+    height: 12px;
+    background-color: #e9d5ff;
+    z-index: -1;
+    border-radius: 6px;
+    transform: rotate(-1deg);
+  }
+}
+
+// Glassmorphism suave, usado en navbar y tarjetas
+.glass {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}

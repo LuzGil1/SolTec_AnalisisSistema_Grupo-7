@@ -1,0 +1,105 @@
+<div class="relative min-h-screen flex flex-col items-center justify-center px-6 py-12">
+
+  <!-- Elementos flotantes de fondo (Blobs) -->
+  <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+    <div class="absolute top-[20%] right-[-5%] w-96 h-96 bg-fuchsia-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-[-20%] left-[20%] w-[40rem] h-[40rem] bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" style="animation-delay: 4s;"></div>
+  </div>
+
+  <a routerLink="/" class="relative z-10 flex items-center gap-2 mb-8">
+    <div class="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-md shadow-purple-200">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="text-xl font-bold tracking-tight text-brand-text-dark">SolTec</span>
+  </a>
+
+  <div class="glass w-full max-w-xl rounded-3xl px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative z-10">
+    <h1 class="text-2xl font-bold text-brand-text-dark mb-1 text-center">Crear cuenta</h1>
+    <p class="text-sm text-brand-text-muted text-center mb-8">Registrate para presentar y dar seguimiento a tus casos</p>
+
+    <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-5">
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="nombres" class="block text-sm font-medium text-brand-text-dark mb-1.5">Nombres</label>
+          <input id="nombres" type="text" formControlName="nombres" autocomplete="given-name"
+                 class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+          @if (f.nombres.invalid && f.nombres.touched) {
+            <p class="text-xs text-fuchsia-600 mt-1.5">Los nombres son obligatorios.</p>
+          }
+        </div>
+
+        <div>
+          <label for="apellidos" class="block text-sm font-medium text-brand-text-dark mb-1.5">Apellidos</label>
+          <input id="apellidos" type="text" formControlName="apellidos" autocomplete="family-name"
+                 class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+          @if (f.apellidos.invalid && f.apellidos.touched) {
+            <p class="text-xs text-fuchsia-600 mt-1.5">Los apellidos son obligatorios.</p>
+          }
+        </div>
+      </div>
+
+      <div>
+        <label for="correo" class="block text-sm font-medium text-brand-text-dark mb-1.5">Correo</label>
+        <input id="correo" type="email" formControlName="correo" autocomplete="email"
+               placeholder="correo@empresa.com.gt"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        @if (f.correo.invalid && f.correo.touched) {
+          <p class="text-xs text-fuchsia-600 mt-1.5">Ingresá un correo válido.</p>
+        }
+      </div>
+
+      <div>
+        <label for="contrasena" class="block text-sm font-medium text-brand-text-dark mb-1.5">Contraseña</label>
+        <input id="contrasena" type="password" formControlName="contrasena" autocomplete="new-password"
+               placeholder="Mínimo 8 caracteres"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        @if (f.contrasena.invalid && f.contrasena.touched) {
+          <p class="text-xs text-fuchsia-600 mt-1.5">La contraseña debe tener al menos 8 caracteres.</p>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="telefono" class="block text-sm font-medium text-brand-text-dark mb-1.5">Teléfono</label>
+          <input id="telefono" type="tel" formControlName="telefono" autocomplete="tel"
+                 class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        </div>
+
+        <div>
+          <label for="nit" class="block text-sm font-medium text-brand-text-dark mb-1.5">NIT</label>
+          <input id="nit" type="text" formControlName="nit"
+                 class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        </div>
+      </div>
+
+      <div>
+        <label for="direccion" class="block text-sm font-medium text-brand-text-dark mb-1.5">Dirección</label>
+        <input id="direccion" type="text" formControlName="direccion" autocomplete="street-address"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+      </div>
+
+      @if (errorMensaje) {
+        <div class="rounded-2xl bg-fuchsia-50 border border-fuchsia-200 px-4 py-3 text-sm text-fuchsia-700">
+          {{ errorMensaje }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="enviando"
+              class="mt-2 bg-gradient-primary text-white font-bold text-base px-8 py-3.5 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0">
+        {{ enviando ? 'Creando cuenta...' : 'Crear cuenta' }}
+      </button>
+    </form>
+
+    <p class="text-sm text-brand-text-muted text-center mt-8">
+      ¿Ya tenés cuenta?
+      <a routerLink="/login" class="text-brand-purple font-semibold hover:underline">Iniciá sesión</a>
+    </p>
+  </div>
+
+</div>

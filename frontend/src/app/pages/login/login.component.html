@@ -1,0 +1,71 @@
+<div class="relative min-h-screen flex flex-col items-center justify-center px-6 py-12">
+
+  <!-- Elementos flotantes de fondo (Blobs) -->
+  <div class="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+    <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+    <div class="absolute top-[20%] right-[-5%] w-96 h-96 bg-fuchsia-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-[-20%] left-[20%] w-[40rem] h-[40rem] bg-violet-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" style="animation-delay: 4s;"></div>
+  </div>
+
+  <a routerLink="/" class="relative z-10 flex items-center gap-2 mb-8">
+    <div class="w-9 h-9 rounded-xl bg-gradient-primary flex items-center justify-center text-white shadow-md shadow-purple-200">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="text-xl font-bold tracking-tight text-brand-text-dark">SolTec</span>
+  </a>
+
+  <div class="glass w-full max-w-md rounded-3xl px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] relative z-10">
+    <h1 class="text-2xl font-bold text-brand-text-dark mb-1 text-center">Iniciar sesión</h1>
+    <p class="text-sm text-brand-text-muted text-center mb-8">Ingresá con tu correo y contraseña</p>
+
+    @if (registroExitoso) {
+      <div class="rounded-2xl bg-purple-50 border border-purple-200 px-4 py-3 text-sm text-brand-text-dark mb-6 text-center">
+        Cuenta creada correctamente. Ya podés iniciar sesión.
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-5">
+
+      <div>
+        <label for="correo" class="block text-sm font-medium text-brand-text-dark mb-1.5">Correo</label>
+        <input id="correo" type="email" formControlName="correo" autocomplete="email"
+               placeholder="correo@soltec.com.gt"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        @if (correo.invalid && correo.touched) {
+          <p class="text-xs text-fuchsia-600 mt-1.5">Ingresá un correo válido.</p>
+        }
+      </div>
+
+      <div>
+        <label for="contrasena" class="block text-sm font-medium text-brand-text-dark mb-1.5">Contraseña</label>
+        <input id="contrasena" type="password" formControlName="contrasena" autocomplete="current-password"
+               placeholder="••••••••"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+        @if (contrasena.invalid && contrasena.touched) {
+          <p class="text-xs text-fuchsia-600 mt-1.5">La contraseña es obligatoria.</p>
+        }
+      </div>
+
+      @if (errorMensaje) {
+        <div class="rounded-2xl bg-fuchsia-50 border border-fuchsia-200 px-4 py-3 text-sm text-fuchsia-700">
+          {{ errorMensaje }}
+        </div>
+      }
+
+      <button type="submit" [disabled]="enviando"
+              class="mt-2 bg-gradient-primary text-white font-bold text-base px-8 py-3.5 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0">
+        {{ enviando ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <p class="text-sm text-brand-text-muted text-center mt-8">
+      ¿No tenés cuenta?
+      <a routerLink="/registro" class="text-brand-purple font-semibold hover:underline">Registrate</a>
+    </p>
+  </div>
+
+</div>
