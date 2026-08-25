@@ -1,0 +1,149 @@
+<div class="max-w-2xl mx-auto w-full">
+
+  @if (cargandoCatalogos) {
+    <p class="text-center text-brand-text-muted">Cargando formulario...</p>
+  }
+
+  @if (errorCatalogos) {
+    <p class="text-center text-brand-text-muted">No se pudo cargar el formulario en este momento.</p>
+  }
+
+  @if (!cargandoCatalogos && !errorCatalogos) {
+
+    @if (boletaConfirmada) {
+      <div class="glass rounded-3xl px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)] text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-gradient-primary flex items-center justify-center text-white mb-6 shadow-md shadow-purple-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-brand-text-dark mb-2">Solicitud registrada</h2>
+        <p class="text-sm text-brand-text-muted mb-1">Tu número de boleta es</p>
+        <p class="text-3xl font-extrabold text-brand-purple mb-4">{{ boletaConfirmada.numeroBoleta }}</p>
+        <p class="text-sm text-brand-text-muted mb-1">
+          Estado: <span class="font-semibold text-brand-text-dark">{{ boletaConfirmada.estado }}</span>
+        </p>
+        @if (boletaConfirmada.fechaLimiteResolucion) {
+          <p class="text-sm text-brand-text-muted mb-6">
+            Fecha límite de resolución:
+            <span class="font-semibold text-brand-text-dark">{{ boletaConfirmada.fechaLimiteResolucion | date: 'dd/MM/yyyy HH:mm' }}</span>
+          </p>
+        } @else {
+          <p class="text-sm text-brand-text-muted mb-6">Esta solicitud no tiene un tiempo máximo de atención asociado.</p>
+        }
+
+        @if (archivoErrorMensaje) {
+          <div class="rounded-2xl bg-fuchsia-50 border border-fuchsia-200 px-4 py-3 text-sm text-fuchsia-700 mb-6 text-left">
+            {{ archivoErrorMensaje }}
+          </div>
+        }
+
+        <button type="button" (click)="irAMisSolicitudes.emit()"
+                class="bg-gradient-primary text-white font-bold text-base px-8 py-3.5 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5">
+          Ver mis solicitudes
+        </button>
+      </div>
+    } @else {
+      <div class="glass rounded-3xl px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        <h1 class="text-2xl font-bold text-brand-text-dark mb-1">Nueva solicitud</h1>
+        <p class="text-sm text-brand-text-muted mb-8">Contanos qué necesitás y le damos seguimiento con un número de boleta.</p>
+
+        <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-5">
+
+          <div>
+            <label for="tipoSolicitudId" class="block text-sm font-medium text-brand-text-dark mb-1.5">Tipo de solicitud</label>
+            <select id="tipoSolicitudId" formControlName="tipoSolicitudId" (change)="onTipoChange()"
+                    class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors">
+              <option [ngValue]="null">Seleccioná el tipo de solicitud</option>
+              @for (tipo of tipos; track tipo.id) {
+                <option [ngValue]="tipo.id">{{ tipo.nombre }}</option>
+              }
+            </select>
+          </div>
+
+          @if (tipoSeleccionado?.requiereServicio) {
+            <div>
+              <label for="ordenServicioId" class="block text-sm font-medium text-brand-text-dark mb-1.5">
+                Servicio recibido @if (tipoSeleccionado?.codigo === 'DENUNCIA') { <span class="text-fuchsia-600">*</span> }
+              </label>
+              <select id="ordenServicioId" formControlName="ordenServicioId"
+                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors">
+                <option [ngValue]="null">Seleccioná el servicio recibido</option>
+                @for (orden of ordenes; track orden.id) {
+                  <option [ngValue]="orden.id">{{ etiquetaOrden(orden) }}</option>
+                }
+              </select>
+              @if (ordenServicioId.invalid && ordenServicioId.touched) {
+                <p class="text-xs text-fuchsia-600 mt-1.5">Debe seleccionar el servicio al que se refiere la denuncia.</p>
+              }
+            </div>
+          }
+
+          @if (tipoSeleccionado?.requiereCasoPrevio) {
+            <div>
+              <label for="casoRelacionadoId" class="block text-sm font-medium text-brand-text-dark mb-1.5">
+                Caso relacionado <span class="text-fuchsia-600">*</span>
+              </label>
+              <select id="casoRelacionadoId" formControlName="casoRelacionadoId"
+                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors">
+                <option [ngValue]="null">Seleccioná el caso previo</option>
+                @for (caso of casosPrevios; track caso.id) {
+                  <option [ngValue]="caso.id">{{ caso.numeroBoleta }} - {{ caso.asunto }}</option>
+                }
+              </select>
+              @if (casoRelacionadoId.invalid && casoRelacionadoId.touched) {
+                <p class="text-xs text-fuchsia-600 mt-1.5">Debe indicar el caso previo al que corresponde su reclamo.</p>
+              }
+            </div>
+          }
+
+          <div>
+            <label for="asunto" class="block text-sm font-medium text-brand-text-dark mb-1.5">Asunto</label>
+            <input id="asunto" type="text" formControlName="asunto" maxlength="150"
+                   placeholder="Resumen breve de tu solicitud"
+                   class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
+            @if (asunto.invalid && asunto.touched) {
+              <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
+            }
+          </div>
+
+          <div>
+            <label for="descripcion" class="block text-sm font-medium text-brand-text-dark mb-1.5">Descripción</label>
+            <textarea id="descripcion" formControlName="descripcion" rows="4"
+                      placeholder="Contanos con detalle qué sucedió"
+                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors resize-none"></textarea>
+            @if (descripcion.invalid && descripcion.touched) {
+              <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
+            }
+          </div>
+
+          @if (tipoSeleccionado?.permiteEvidencia) {
+            <div>
+              <label for="evidencia" class="block text-sm font-medium text-brand-text-dark mb-1.5">Evidencia (opcional)</label>
+              <input id="evidencia" type="file" (change)="onArchivoSeleccionado($event)"
+                     class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-2.5 text-sm text-brand-text-dark file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-gradient-primary file:text-white file:text-sm file:font-semibold" />
+            </div>
+          }
+
+          @if (errorMensaje) {
+            <div class="rounded-2xl bg-fuchsia-50 border border-fuchsia-200 px-4 py-3 text-sm text-fuchsia-700">
+              {{ errorMensaje }}
+            </div>
+          }
+
+          <div class="flex items-center gap-4 mt-2">
+            <button type="submit" [disabled]="enviando"
+                    class="bg-gradient-primary text-white font-bold text-base px-8 py-3.5 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0">
+              {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
+            </button>
+            <button type="button" (click)="cancelar()" [disabled]="enviando"
+                    class="text-brand-text-dark font-semibold text-sm px-6 py-3.5 rounded-full transition-colors hover:bg-purple-50 disabled:opacity-60">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  }
+
+</div>

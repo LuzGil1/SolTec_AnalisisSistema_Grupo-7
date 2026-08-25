@@ -22,12 +22,6 @@
     <h1 class="text-2xl font-bold text-brand-text-dark mb-1 text-center">Iniciar sesión</h1>
     <p class="text-sm text-brand-text-muted text-center mb-8">Ingresá con tu correo y contraseña</p>
 
-    @if (registroExitoso) {
-      <div class="rounded-2xl bg-purple-50 border border-purple-200 px-4 py-3 text-sm text-brand-text-dark mb-6 text-center">
-        Cuenta creada correctamente. Ya podés iniciar sesión.
-      </div>
-    }
-
     <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-5">
 
       <div>
@@ -61,11 +55,6 @@
         {{ enviando ? 'Ingresando...' : 'Ingresar' }}
       </button>
     </form>
-
-    <p class="text-sm text-brand-text-muted text-center mt-8">
-      ¿No tenés cuenta?
-      <a routerLink="/registro" class="text-brand-purple font-semibold hover:underline">Registrate</a>
-    </p>
   </div>
 
 </div>

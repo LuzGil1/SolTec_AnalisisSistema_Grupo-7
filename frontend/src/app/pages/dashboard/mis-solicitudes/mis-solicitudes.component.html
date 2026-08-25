@@ -1,0 +1,51 @@
+<div class="max-w-4xl mx-auto w-full">
+
+  <h1 class="text-2xl font-bold text-brand-text-dark mb-1">Mis solicitudes</h1>
+  <p class="text-sm text-brand-text-muted mb-8">Historial de quejas, reclamos, denuncias y sugerencias que has registrado.</p>
+
+  @if (cargando) {
+    <p class="text-center text-brand-text-muted">Cargando solicitudes...</p>
+  }
+
+  @if (error) {
+    <p class="text-center text-brand-text-muted">No se pudieron cargar tus solicitudes en este momento.</p>
+  }
+
+  @if (!cargando && !error) {
+    @if (casos.length === 0) {
+      <div class="glass rounded-3xl px-8 py-10 text-center text-brand-text-muted shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        Todavía no has registrado ninguna solicitud.
+      </div>
+    } @else {
+      <div class="glass rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead>
+            <tr class="border-b border-purple-100 text-brand-text-muted">
+              <th class="px-6 py-4 font-semibold">Boleta</th>
+              <th class="px-6 py-4 font-semibold">Tipo</th>
+              <th class="px-6 py-4 font-semibold">Asunto</th>
+              <th class="px-6 py-4 font-semibold">Estado</th>
+              <th class="px-6 py-4 font-semibold">Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (caso of casos; track caso.id) {
+              <tr class="border-b border-purple-50 last:border-0">
+                <td class="px-6 py-4 font-semibold text-brand-text-dark whitespace-nowrap">{{ caso.numeroBoleta }}</td>
+                <td class="px-6 py-4 text-brand-text-dark">{{ caso.tipoSolicitud }}</td>
+                <td class="px-6 py-4 text-brand-text-dark">{{ caso.asunto }}</td>
+                <td class="px-6 py-4">
+                  <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-brand-text-dark">
+                    {{ caso.estado }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-brand-text-muted whitespace-nowrap">{{ caso.fechaRegistro | date: 'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</div>

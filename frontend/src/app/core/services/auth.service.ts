@@ -14,24 +14,6 @@ export interface LoginResponse {
   nombre: string;
 }
 
-export interface RegistroRequest {
-  nombres: string;
-  apellidos: string;
-  correo: string;
-  contrasena: string;
-  telefono: string;
-  nit: string;
-  direccion: string;
-}
-
-export interface RegistroResponse {
-  id: number;
-  nombres: string;
-  apellidos: string;
-  correo: string;
-  rol: string;
-}
-
 const TOKEN_KEY = 'soltec_token';
 const ROL_KEY = 'soltec_rol';
 const NOMBRE_KEY = 'soltec_nombre';
@@ -51,10 +33,6 @@ export class AuthService {
         localStorage.setItem(NOMBRE_KEY, respuesta.nombre);
       })
     );
-  }
-
-  registro(datos: RegistroRequest): Observable<RegistroResponse> {
-    return this.http.post<RegistroResponse>(`${this.baseUrl}/registro`, datos);
   }
 
   logout(): void {

@@ -1,6 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { NuevaSolicitudComponent } from './nueva-solicitud/nueva-solicitud.component';
+import { MisSolicitudesComponent } from './mis-solicitudes/mis-solicitudes.component';
 
 interface ConfigRol {
   etiqueta: string;
@@ -20,7 +22,7 @@ const CONFIG_ROLES: Record<string, ConfigRol> = {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [NuevaSolicitudComponent, MisSolicitudesComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -31,6 +33,12 @@ export class DashboardComponent {
   rol = this.authService.getRol() ?? 'CLIENTE';
   nombre = this.authService.getNombre() ?? '';
   config = CONFIG_ROLES[this.rol] ?? CONFIG_ROLES['CLIENTE'];
+
+  vistaActual = signal(this.config.menu[0] ?? 'Inicio');
+
+  seleccionar(opcion: string): void {
+    this.vistaActual.set(opcion);
+  }
 
   get iniciales(): string {
     return this.nombre

@@ -18,15 +18,15 @@
 
     <!-- Menu -->
     <nav class="flex-1 flex flex-col gap-1.5">
-      @for (opcion of config.menu; track opcion; let primero = $first) {
-        <a href="javascript:void(0)"
+      @for (opcion of config.menu; track opcion) {
+        <a href="javascript:void(0)" (click)="seleccionar(opcion)"
            class="flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-colors"
-           [class.text-brand-text-muted]="!primero"
-           [class.hover:bg-purple-50]="!primero"
-           [style.background]="primero ? config.color : null"
-           [style.color]="primero ? config.colorTexto : null">
+           [class.text-brand-text-muted]="vistaActual() !== opcion"
+           [class.hover:bg-purple-50]="vistaActual() !== opcion"
+           [style.background]="vistaActual() === opcion ? config.color : null"
+           [style.color]="vistaActual() === opcion ? config.colorTexto : null">
           <span class="w-1.5 h-1.5 rounded-full shrink-0"
-                [style.background]="primero ? config.colorTexto : config.color"></span>
+                [style.background]="vistaActual() === opcion ? config.colorTexto : config.color"></span>
           {{ opcion }}
         </a>
       }
@@ -56,10 +56,20 @@
   </aside>
 
   <!-- Contenido -->
-  <main class="flex-1 flex items-center justify-center px-10 py-10">
-    <h1 class="text-3xl md:text-4xl font-bold text-brand-text-dark">
-      Bienvenido, {{ nombre }}
-    </h1>
+  <main class="flex-1 px-10 py-10 overflow-y-auto">
+    @if (rol === 'CLIENTE' && vistaActual() === 'Nueva solicitud') {
+      <app-nueva-solicitud
+        (irAMisSolicitudes)="seleccionar('Mis solicitudes')"
+        (cancelado)="seleccionar('Inicio')" />
+    } @else if (rol === 'CLIENTE' && vistaActual() === 'Mis solicitudes') {
+      <app-mis-solicitudes />
+    } @else {
+      <div class="h-full flex items-center justify-center">
+        <h1 class="text-3xl md:text-4xl font-bold text-brand-text-dark">
+          Bienvenido, {{ nombre }}
+        </h1>
+      </div>
+    }
   </main>
 
 </div>

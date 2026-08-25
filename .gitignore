@@ -4,6 +4,7 @@ Claude.md
 
 # Java / Maven
 backend/target/
+backend/uploads/
 *.class
 *.jar
 *.log
@@ -29,4 +30,5 @@ out/
 # Sistema operativo
 Thumbs.db
 desktop.ini
-.DS_Store
+.DS_Store~$*
+CU2_REGISTROSOLICITUD_v2.docx

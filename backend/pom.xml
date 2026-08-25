@@ -40,10 +40,12 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Sin scope runtime: el GlobalExceptionHandler referencia PSQLException
+             en tiempo de compilacion para traducir los RAISE EXCEPTION de los
+             triggers en respuestas 400 legibles. -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
