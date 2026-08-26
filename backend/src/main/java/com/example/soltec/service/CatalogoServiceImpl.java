@@ -1,5 +1,6 @@
 package com.example.soltec.service;
 
+import com.example.soltec.dto.ParametrosDTO;
 import com.example.soltec.dto.TipoSolicitudDTO;
 import com.example.soltec.repository.TipoSolicitudRepository;
 import java.util.List;
@@ -14,6 +15,7 @@ public class CatalogoServiceImpl implements CatalogoService {
     private static final String CODIGO_SUGERENCIA = "SUGERENCIA";
 
     private final TipoSolicitudRepository tipoSolicitudRepository;
+    private final ParametroService parametroService;
 
     @Override
     public List<TipoSolicitudDTO> listarTiposSolicitud() {
@@ -30,5 +32,12 @@ public class CatalogoServiceImpl implements CatalogoService {
                             .build();
                 })
                 .toList();
+    }
+
+    @Override
+    public ParametrosDTO obtenerParametros() {
+        return ParametrosDTO.builder()
+                .maxMbAdjunto(parametroService.obtenerMaxMbAdjunto())
+                .build();
     }
 }

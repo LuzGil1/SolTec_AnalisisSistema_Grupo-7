@@ -54,6 +54,15 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Deteccion de tipo MIME real por contenido (magic bytes), para
+             validar adjuntos contra su extension y evitar ejecutables
+             renombrados como documento u otro formato permitido. -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+
         <!-- JWT: generacion y validacion del token -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

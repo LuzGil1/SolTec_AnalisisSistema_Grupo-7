@@ -1,5 +1,6 @@
 package com.example.soltec.controller;
 
+import com.example.soltec.dto.ParametrosDTO;
 import com.example.soltec.dto.TipoSolicitudDTO;
 import com.example.soltec.service.CatalogoService;
 import java.util.List;
@@ -21,5 +22,10 @@ public class CatalogoController {
     @GetMapping("/tipos-solicitud")
     public ResponseEntity<List<TipoSolicitudDTO>> tiposSolicitud() {
         return ResponseEntity.ok(catalogoService.listarTiposSolicitud());
+    }
+
+    @GetMapping("/parametros")
+    public ResponseEntity<ParametrosDTO> parametros() {
+        return ResponseEntity.ok(catalogoService.obtenerParametros());
     }
 }

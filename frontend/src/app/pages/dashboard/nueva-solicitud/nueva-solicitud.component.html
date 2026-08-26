@@ -122,6 +122,15 @@
               <label for="evidencia" class="block text-sm font-medium text-brand-text-dark mb-1.5">Evidencia (opcional)</label>
               <input id="evidencia" type="file" (change)="onArchivoSeleccionado($event)"
                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-2.5 text-sm text-brand-text-dark file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-gradient-primary file:text-white file:text-sm file:font-semibold" />
+              <p class="text-xs text-brand-text-muted mt-1.5">Tamaño máximo por archivo: {{ maxMbAdjunto }} MB</p>
+              @if (advertenciaTamano) {
+                <p class="flex items-start gap-1.5 text-xs text-fuchsia-600 mt-1.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 shrink-0 mt-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                  </svg>
+                  <span>{{ advertenciaTamano }}</span>
+                </p>
+              }
             </div>
           }
 
@@ -132,7 +141,7 @@
           }
 
           <div class="flex items-center gap-4 mt-2">
-            <button type="submit" [disabled]="enviando"
+            <button type="submit" [disabled]="enviando || !!advertenciaTamano"
                     class="bg-gradient-primary text-white font-bold text-base px-8 py-3.5 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0">
               {{ enviando ? 'Enviando...' : 'Enviar solicitud' }}
             </button>

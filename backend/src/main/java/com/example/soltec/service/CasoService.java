@@ -1,7 +1,9 @@
 package com.example.soltec.service;
 
+import com.example.soltec.dto.AdjuntoArchivoDTO;
 import com.example.soltec.dto.AdjuntoDTO;
 import com.example.soltec.dto.CasoCreadoDTO;
+import com.example.soltec.dto.CasoDetalleDTO;
 import com.example.soltec.dto.CasoResumenDTO;
 import com.example.soltec.dto.NuevaSolicitudRequest;
 import java.io.IOException;
@@ -15,4 +17,8 @@ public interface CasoService {
     CasoCreadoDTO registrar(NuevaSolicitudRequest request, String direccionIp);
 
     AdjuntoDTO adjuntarEvidencia(Integer casoId, MultipartFile archivo) throws IOException;
+
+    CasoDetalleDTO obtenerDetalle(Integer casoId, String direccionIp);
+
+    AdjuntoArchivoDTO descargarAdjunto(Integer casoId, Integer adjuntoId, String direccionIp) throws IOException;
 }

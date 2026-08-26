@@ -12,7 +12,7 @@ interface ConfigRol {
 }
 
 const CONFIG_ROLES: Record<string, ConfigRol> = {
-  CLIENTE: { etiqueta: 'Cliente', color: '#c084fc', colorTexto: '#ffffff', menu: ['Inicio', 'Mis solicitudes', 'Nueva solicitud', 'Mi perfil'] },
+  CLIENTE: { etiqueta: 'Cliente', color: '#c084fc', colorTexto: '#ffffff', menu: ['Inicio', 'Mis solicitudes', 'Nueva solicitud'] },
   TECNICO: { etiqueta: 'Técnico de soporte', color: '#a855f7', colorTexto: '#ffffff', menu: ['Inicio', 'Mis casos', 'Solicitar siguiente caso', 'Mi perfil'] },
   SUPERVISOR: { etiqueta: 'Supervisor', color: '#7e22ce', colorTexto: '#ffffff', menu: ['Inicio', 'Denuncias', 'Escalamientos', 'Reportes'] },
   ADMIN: { etiqueta: 'Administrador', color: '#4c1d95', colorTexto: '#ffffff', menu: ['Inicio', 'Usuarios', 'Catálogos', 'Parámetros'] },

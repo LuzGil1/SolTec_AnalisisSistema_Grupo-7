@@ -34,6 +34,8 @@ export class NuevaSolicitudComponent implements OnInit {
   errorMensaje = '';
   archivoSeleccionado: File | null = null;
   archivoErrorMensaje = '';
+  advertenciaTamano = '';
+  maxMbAdjunto = 0;
   boletaConfirmada: CasoCreadoDTO | null = null;
 
   form = this.fb.group({
@@ -49,11 +51,13 @@ export class NuevaSolicitudComponent implements OnInit {
       tipos: this.catalogoService.listarTiposSolicitud(),
       ordenes: this.ordenServicioService.listarMias(),
       casos: this.casoService.listarMisCasos(),
+      parametros: this.catalogoService.obtenerParametros(),
     }).subscribe({
-      next: ({ tipos, ordenes, casos }) => {
+      next: ({ tipos, ordenes, casos, parametros }) => {
         this.tipos = tipos;
         this.ordenes = ordenes;
         this.casosPrevios = casos;
+        this.maxMbAdjunto = parametros.maxMbAdjunto;
         this.cargandoCatalogos = false;
       },
       error: () => {
@@ -92,6 +96,7 @@ export class NuevaSolicitudComponent implements OnInit {
     this.casoRelacionadoId.setValue(null);
     this.archivoSeleccionado = null;
     this.archivoErrorMensaje = '';
+    this.advertenciaTamano = '';
 
     this.ordenServicioId.clearValidators();
     this.casoRelacionadoId.clearValidators();
@@ -109,12 +114,28 @@ export class NuevaSolicitudComponent implements OnInit {
 
   onArchivoSeleccionado(evento: Event): void {
     const input = evento.target as HTMLInputElement;
-    this.archivoSeleccionado = input.files?.[0] ?? null;
+    const archivo = input.files?.[0] ?? null;
     this.archivoErrorMensaje = '';
+
+    const maxBytes = this.maxMbAdjunto * 1024 * 1024;
+    if (archivo && archivo.size > maxBytes) {
+      this.advertenciaTamano = `El archivo pesa ${this.formatearMb(archivo.size)} MB. El tamaño máximo permitido es ${this.maxMbAdjunto} MB.`;
+      this.archivoSeleccionado = null;
+      input.value = '';
+      return;
+    }
+
+    this.advertenciaTamano = '';
+    this.archivoSeleccionado = archivo;
+  }
+
+  private formatearMb(bytes: number): string {
+    const mb = Math.round((bytes / (1024 * 1024)) * 100) / 100;
+    return mb.toString();
   }
 
   enviar(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.advertenciaTamano) {
       this.form.markAllAsTouched();
       return;
     }

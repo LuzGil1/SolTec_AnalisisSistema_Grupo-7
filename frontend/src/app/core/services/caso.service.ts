@@ -27,6 +27,38 @@ export interface CasoCreadoDTO {
   fechaLimiteResolucion: string | null;
 }
 
+export interface AdjuntoDTO {
+  id: number;
+  nombreArchivo: string;
+  tipoMime: string;
+  tamanoBytes: number;
+}
+
+export interface ServicioRecibidoDTO {
+  numeroOrden: string;
+  servicio: string;
+  fechaServicio: string;
+}
+
+export interface CasoRelacionadoDTO {
+  id: number;
+  numeroBoleta: string;
+  asunto: string;
+}
+
+export interface CasoDetalleDTO {
+  numeroBoleta: string;
+  tipo: string;
+  estado: string;
+  fechaRegistro: string;
+  asunto: string;
+  descripcion: string;
+  servicioRecibido: ServicioRecibidoDTO | null;
+  casoRelacionado: CasoRelacionadoDTO | null;
+  fechaLimiteResolucion: string | null;
+  adjuntos: AdjuntoDTO[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class CasoService {
 
@@ -38,6 +70,10 @@ export class CasoService {
     return this.http.get<CasoResumenDTO[]>(this.baseUrl);
   }
 
+  obtenerDetalle(casoId: number): Observable<CasoDetalleDTO> {
+    return this.http.get<CasoDetalleDTO>(`${this.baseUrl}/${casoId}`);
+  }
+
   registrar(datos: NuevaSolicitudRequest): Observable<CasoCreadoDTO> {
     return this.http.post<CasoCreadoDTO>(this.baseUrl, datos);
   }
@@ -46,5 +82,9 @@ export class CasoService {
     const formData = new FormData();
     formData.append('archivo', archivo);
     return this.http.post(`${this.baseUrl}/${casoId}/adjuntos`, formData);
+  }
+
+  descargarAdjunto(casoId: number, adjuntoId: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${casoId}/adjuntos/${adjuntoId}`, { responseType: 'blob' });
   }
 }

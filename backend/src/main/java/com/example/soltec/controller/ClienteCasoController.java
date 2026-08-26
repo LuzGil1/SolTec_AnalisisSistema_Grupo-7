@@ -1,16 +1,23 @@
 package com.example.soltec.controller;
 
+import com.example.soltec.dto.AdjuntoArchivoDTO;
 import com.example.soltec.dto.AdjuntoDTO;
 import com.example.soltec.dto.CasoCreadoDTO;
+import com.example.soltec.dto.CasoDetalleDTO;
 import com.example.soltec.dto.CasoResumenDTO;
 import com.example.soltec.dto.NuevaSolicitudRequest;
 import com.example.soltec.service.CasoService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +40,25 @@ public class ClienteCasoController {
     @GetMapping
     public ResponseEntity<List<CasoResumenDTO>> misCasos() {
         return ResponseEntity.ok(casoService.listarDelClienteActual());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CasoDetalleDTO> detalle(@PathVariable Integer id, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(casoService.obtenerDetalle(id, httpRequest.getRemoteAddr()));
+    }
+
+    @GetMapping("/{casoId}/adjuntos/{adjuntoId}")
+    public ResponseEntity<Resource> descargarAdjunto(@PathVariable Integer casoId,
+                                                       @PathVariable Integer adjuntoId,
+                                                       HttpServletRequest httpRequest) throws IOException {
+        AdjuntoArchivoDTO archivo = casoService.descargarAdjunto(casoId, adjuntoId, httpRequest.getRemoteAddr());
+        ContentDisposition disposicion = ContentDisposition.inline()
+                .filename(archivo.getNombreArchivo(), StandardCharsets.UTF_8)
+                .build();
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(archivo.getTipoMime()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, disposicion.toString())
+                .body(archivo.getRecurso());
     }
 
     @PostMapping

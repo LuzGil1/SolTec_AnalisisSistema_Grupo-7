@@ -1,6 +1,7 @@
 package com.example.soltec.storage;
 
 import java.io.IOException;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 // Local en desarrollo, Azure Blob Storage en produccion. El resto de la
@@ -8,4 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface AlmacenamientoService {
 
     ArchivoGuardado guardar(MultipartFile archivo, Integer casoId) throws IOException;
+
+    Resource recuperar(String ruta) throws IOException;
 }

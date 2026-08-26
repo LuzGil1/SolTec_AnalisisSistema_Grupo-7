@@ -13,8 +13,12 @@
 
   @if (!cargando && !error) {
     @if (casos.length === 0) {
-      <div class="glass rounded-3xl px-8 py-10 text-center text-brand-text-muted shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
-        Todavía no has registrado ninguna solicitud.
+      <div class="glass rounded-3xl px-8 py-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        <p class="text-brand-text-muted mb-6">Aún no ha registrado ninguna solicitud.</p>
+        <button type="button" (click)="irANuevaSolicitud.emit()"
+                class="bg-gradient-primary text-white font-bold text-sm px-6 py-3 rounded-full transition-all shadow-[0_8px_25px_rgba(168,85,247,0.4)] hover:shadow-[0_12px_35px_rgba(168,85,247,0.5)] hover:-translate-y-0.5">
+          Registrar mi primera solicitud
+        </button>
       </div>
     } @else {
       <div class="glass rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-x-auto">
@@ -26,6 +30,7 @@
               <th class="px-6 py-4 font-semibold">Asunto</th>
               <th class="px-6 py-4 font-semibold">Estado</th>
               <th class="px-6 py-4 font-semibold">Fecha</th>
+              <th class="px-6 py-4 font-semibold text-right">Acción</th>
             </tr>
           </thead>
           <tbody>
@@ -40,6 +45,15 @@
                   </span>
                 </td>
                 <td class="px-6 py-4 text-brand-text-muted whitespace-nowrap">{{ caso.fechaRegistro | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td class="px-6 py-4 text-right">
+                  <button type="button" (click)="abrirDetalle(caso.id)" title="Ver detalle"
+                          class="inline-flex items-center justify-center w-9 h-9 rounded-full text-brand-purple hover:bg-purple-50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </button>
+                </td>
               </tr>
             }
           </tbody>
@@ -49,3 +63,115 @@
   }
 
 </div>
+
+@if (casoIdSeleccionado !== null) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-text-dark/40 backdrop-blur-sm"
+       (click)="cerrarDetalle()">
+    <div class="glass bg-white/90 rounded-3xl shadow-[0_20px_60px_rgb(0,0,0,0.15)] w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+         (click)="$event.stopPropagation()">
+
+      @if (detalleCargando) {
+        <div class="px-8 py-16 text-center text-brand-text-muted">Cargando detalle...</div>
+      }
+
+      @if (detalleError) {
+        <div class="px-8 py-16 text-center">
+          <p class="text-brand-text-muted mb-6">No se pudo cargar el detalle de esta solicitud.</p>
+          <button type="button" (click)="cerrarDetalle()"
+                  class="text-brand-text-dark font-semibold text-sm px-6 py-3 rounded-full transition-colors hover:bg-purple-50">
+            Cerrar
+          </button>
+        </div>
+      }
+
+      @if (detalleSeleccionado) {
+        <div class="px-8 py-8">
+
+          <div class="flex items-start justify-between gap-4 mb-6">
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Boleta</p>
+              <h2 class="text-2xl font-bold text-brand-text-dark">{{ detalleSeleccionado.numeroBoleta }}</h2>
+            </div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-brand-text-dark shrink-0">
+              {{ detalleSeleccionado.estado }}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Tipo de solicitud</p>
+              <p class="text-sm text-brand-text-dark font-medium">{{ detalleSeleccionado.tipo }}</p>
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Fecha de registro</p>
+              <p class="text-sm text-brand-text-dark font-medium">{{ detalleSeleccionado.fechaRegistro | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          </div>
+
+          @if (detalleSeleccionado.servicioRecibido) {
+            <div class="rounded-2xl bg-purple-50 px-5 py-4 mb-6">
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Servicio recibido</p>
+              <p class="text-sm text-brand-text-dark font-medium">
+                {{ detalleSeleccionado.servicioRecibido.numeroOrden }} - {{ detalleSeleccionado.servicioRecibido.servicio }}
+              </p>
+              <p class="text-xs text-brand-text-muted mt-0.5">
+                {{ detalleSeleccionado.servicioRecibido.fechaServicio | date: 'dd/MM/yyyy' }}
+              </p>
+            </div>
+          }
+
+          @if (detalleSeleccionado.casoRelacionado) {
+            <div class="rounded-2xl bg-purple-50 px-5 py-4 mb-6">
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Solicitud relacionada</p>
+              <p class="text-sm text-brand-text-dark font-semibold">{{ detalleSeleccionado.casoRelacionado.numeroBoleta }}</p>
+              <p class="text-xs text-brand-text-muted mt-0.5">{{ detalleSeleccionado.casoRelacionado.asunto }}</p>
+            </div>
+          }
+
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Asunto</p>
+            <p class="text-sm text-brand-text-dark font-medium mb-4">{{ detalleSeleccionado.asunto }}</p>
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Descripción</p>
+            <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalleSeleccionado.descripcion }}</p>
+          </div>
+
+          @if (detalleSeleccionado.fechaLimiteResolucion) {
+            <div class="mb-6">
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Fecha límite de resolución</p>
+              <p class="text-sm text-brand-text-dark font-medium">{{ detalleSeleccionado.fechaLimiteResolucion | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          }
+
+          @if (detalleSeleccionado.adjuntos.length > 0) {
+            <div class="mb-2">
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Evidencia adjunta</p>
+              <div class="flex flex-col gap-3">
+                @for (adjunto of detalleSeleccionado.adjuntos; track adjunto.id) {
+                  <div class="rounded-2xl border-2 border-purple-100 px-4 py-3">
+                    @if (esImagen(adjunto) && previewUrls[adjunto.id]) {
+                      <img [src]="previewUrls[adjunto.id]" [alt]="adjunto.nombreArchivo" class="max-h-56 rounded-xl mb-2 mx-auto" />
+                    }
+                    <div class="flex items-center justify-between gap-3">
+                      <span class="text-sm text-brand-text-dark truncate">{{ adjunto.nombreArchivo }}</span>
+                      <button type="button" (click)="descargarAdjunto(adjunto)"
+                              class="text-xs font-semibold text-brand-purple hover:underline shrink-0">
+                        Descargar
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="flex justify-end mt-8">
+            <button type="button" (click)="cerrarDetalle()"
+                    class="text-brand-text-dark font-semibold text-sm px-6 py-3 rounded-full transition-colors hover:bg-purple-50">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

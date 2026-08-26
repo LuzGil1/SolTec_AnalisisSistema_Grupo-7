@@ -1,9 +1,12 @@
 package com.example.soltec.controller;
 
 import com.example.soltec.dto.ErrorResponse;
+import com.example.soltec.exception.AccesoNoAutorizadoException;
 import com.example.soltec.exception.CredencialesInvalidasException;
 import com.example.soltec.exception.SolicitudInvalidaException;
+import com.example.soltec.service.ParametroService;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +21,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    private final ParametroService parametroService;
 
     @ExceptionHandler(CredencialesInvalidasException.class)
     public ResponseEntity<ErrorResponse> credencialesInvalidas(CredencialesInvalidasException ex) {
@@ -37,10 +43,17 @@ public class GlobalExceptionHandler {
         return construir(HttpStatus.FORBIDDEN, "No tiene permisos para realizar esta accion");
     }
 
+    @ExceptionHandler(AccesoNoAutorizadoException.class)
+    public ResponseEntity<ErrorResponse> accesoNoAutorizado(AccesoNoAutorizadoException ex) {
+        return construir(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    // Tomcat rechaza la peticion por spring.servlet.multipart.max-file-size
+    // antes de que llegue al controller: el mensaje sale del mismo parametro
+    // MAX_MB_ADJUNTO que valida CasoServiceImpl, no queda escrito a mano.
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<ErrorResponse> archivoDemasiadoGrande(MaxUploadSizeExceededException ex) {
-        return construir(HttpStatus.BAD_REQUEST,
-                "El archivo no pudo adjuntarse. Verifique que el formato sea valido y que no exceda el tamano maximo permitido.");
+        return construir(HttpStatus.BAD_REQUEST, parametroService.mensajeArchivoExcedeTamano());
     }
 
     // Las reglas que ya valida la base de datos (reclamo sin caso previo, orden
