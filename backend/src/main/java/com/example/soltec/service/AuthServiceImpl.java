@@ -21,10 +21,10 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest request) {
         Usuario usuario = usuarioRepository.findByCorreo(request.getCorreo())
-                .orElseThrow(() -> new CredencialesInvalidasException("Correo o contrasena incorrectos"));
+                .orElseThrow(() -> new CredencialesInvalidasException("Correo o contraseña incorrectos"));
 
         if (!usuario.getActivo() || !passwordEncoder.matches(request.getContrasena(), usuario.getContrasenaHash())) {
-            throw new CredencialesInvalidasException("Correo o contrasena incorrectos");
+            throw new CredencialesInvalidasException("Correo o contraseña incorrectos");
         }
 
         String token = jwtUtil.generarToken(usuario);

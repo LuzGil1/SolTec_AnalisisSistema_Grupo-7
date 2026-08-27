@@ -30,7 +30,11 @@
                placeholder="correo@soltec.com.gt"
                class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
         @if (correo.invalid && correo.touched) {
-          <p class="text-xs text-fuchsia-600 mt-1.5">Ingresá un correo válido.</p>
+          @if (correo.hasError('required')) {
+            <p class="text-xs text-fuchsia-600 mt-1.5">El correo electrónico es obligatorio.</p>
+          } @else if (correo.hasError('email')) {
+            <p class="text-xs text-fuchsia-600 mt-1.5">Ingresá un correo válido.</p>
+          }
         }
       </div>
 
