@@ -244,3 +244,19 @@ CREATE TABLE parametro (
 );
 COMMENT ON TABLE parametro IS
   'Los pesos del score son configurables: el algoritmo NO está quemado en el código';
+
+
+
+
+
+
+SELECT u.id,
+       r.nombre AS rol,
+       u.nombres || ' ' || u.apellidos AS nombre,
+       u.correo,
+       u.telefono,
+       u.activo,
+       LEFT(u.contrasena_hash, 7) AS hash_inicio
+FROM soltec.usuario u
+JOIN soltec.rol r ON r.id = u.rol_id
+ORDER BY r.id, u.id;
