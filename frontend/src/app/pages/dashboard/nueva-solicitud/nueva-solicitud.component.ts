@@ -42,8 +42,8 @@ export class NuevaSolicitudComponent implements OnInit {
     tipoSolicitudId: this.fb.control<number | null>(null, Validators.required),
     ordenServicioId: this.fb.control<number | null>(null),
     casoRelacionadoId: this.fb.control<number | null>(null),
-    asunto: this.fb.control('', [Validators.required, Validators.maxLength(150)]),
-    descripcion: this.fb.control('', Validators.required),
+    asunto: this.fb.control('', [Validators.required, Validators.maxLength(30)]),
+    descripcion: this.fb.control('', [Validators.required, Validators.maxLength(150)]),
   });
 
   ngOnInit(): void {
@@ -81,6 +81,10 @@ export class NuevaSolicitudComponent implements OnInit {
 
   get casoRelacionadoId() {
     return this.form.controls.casoRelacionadoId;
+  }
+
+  get tipoSolicitudId() {
+    return this.form.controls.tipoSolicitudId;
   }
 
   etiquetaOrden(orden: OrdenServicioDTO): string {

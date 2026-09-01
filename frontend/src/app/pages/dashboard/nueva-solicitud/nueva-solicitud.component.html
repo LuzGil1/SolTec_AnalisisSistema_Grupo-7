@@ -46,12 +46,14 @@
     } @else {
       <div class="glass rounded-3xl px-8 py-10 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
         <h1 class="text-2xl font-bold text-brand-text-dark mb-1">Nueva solicitud</h1>
-        <p class="text-sm text-brand-text-muted mb-8">Contanos qué necesitás y le damos seguimiento con un número de boleta.</p>
-
+     
+<br>
         <form [formGroup]="form" (ngSubmit)="enviar()" class="flex flex-col gap-5">
 
           <div>
-            <label for="tipoSolicitudId" class="block text-sm font-medium text-brand-text-dark mb-1.5">Tipo de solicitud</label>
+            <label for="tipoSolicitudId" class="block text-sm font-medium text-brand-text-dark mb-1.5">
+              Tipo de solicitud <span class="text-fuchsia-600">*</span>
+            </label>
             <select id="tipoSolicitudId" formControlName="tipoSolicitudId" (change)="onTipoChange()"
                     class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors">
               <option [ngValue]="null">Seleccioná el tipo de solicitud</option>
@@ -59,6 +61,9 @@
                 <option [ngValue]="tipo.id">{{ tipo.nombre }}</option>
               }
             </select>
+            @if (tipoSolicitudId.invalid && tipoSolicitudId.touched) {
+              <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
+            }
           </div>
 
           @if (tipoSeleccionado?.requiereServicio) {
@@ -74,7 +79,7 @@
                 }
               </select>
               @if (ordenServicioId.invalid && ordenServicioId.touched) {
-                <p class="text-xs text-fuchsia-600 mt-1.5">Debe seleccionar el servicio al que se refiere la denuncia.</p>
+                <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
               }
             </div>
           }
@@ -99,22 +104,50 @@
 
           <div>
             <label for="asunto" class="block text-sm font-medium text-brand-text-dark mb-1.5">Asunto</label>
-            <input id="asunto" type="text" formControlName="asunto" maxlength="150"
+            <input id="asunto" type="text" formControlName="asunto" maxlength="30"
                    placeholder="Resumen breve de tu solicitud"
                    class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
-            @if (asunto.invalid && asunto.touched) {
-              <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
-            }
+
+            <div class="mt-1.5 flex items-center justify-between gap-2 min-h-4">
+              <div>
+                @if (asunto.touched && asunto.errors?.['required']) {
+                  <p class="text-xs text-fuchsia-600">Este campo es obligatorio.</p>
+                }
+                @else if (asunto.touched && asunto.errors?.['maxlength']) {
+                  <p class="text-xs text-fuchsia-600">El asunto no puede superar los 30 caracteres.</p>
+                }
+              </div>
+
+              <span class="text-[11px] font-medium"
+                    [class.text-fuchsia-600]="(asunto.value?.length ?? 0) >= 30"
+                    [class.text-brand-text-muted]="(asunto.value?.length ?? 0) < 30">
+                {{ asunto.value?.length ?? 0 }}/30
+              </span>
+            </div>
           </div>
 
           <div>
             <label for="descripcion" class="block text-sm font-medium text-brand-text-dark mb-1.5">Descripción</label>
-            <textarea id="descripcion" formControlName="descripcion" rows="4"
+            <textarea id="descripcion" formControlName="descripcion" rows="4" maxlength="150"
                       placeholder="Contanos con detalle qué sucedió"
                       class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors resize-none"></textarea>
-            @if (descripcion.invalid && descripcion.touched) {
-              <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
-            }
+
+            <div class="mt-1.5 flex items-center justify-between gap-2 min-h-4">
+              <div>
+                @if (descripcion.touched && descripcion.errors?.['required']) {
+                  <p class="text-xs text-fuchsia-600">Este campo es obligatorio.</p>
+                }
+                @else if (descripcion.touched && descripcion.errors?.['maxlength']) {
+                  <p class="text-xs text-fuchsia-600">La descripción no puede superar los 150 caracteres.</p>
+                }
+              </div>
+
+              <span class="text-[11px] font-medium"
+                    [class.text-fuchsia-600]="(descripcion.value?.length ?? 0) >= 150"
+                    [class.text-brand-text-muted]="(descripcion.value?.length ?? 0) < 150">
+                {{ descripcion.value?.length ?? 0 }}/150
+              </span>
+            </div>
           </div>
 
           @if (tipoSeleccionado?.permiteEvidencia) {
