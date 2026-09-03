@@ -26,7 +26,6 @@ public class CatalogoServiceImpl implements CatalogoService {
                             .id(tipo.getId())
                             .codigo(tipo.getCodigo())
                             .nombre(tipo.getNombre())
-                            .requiereCasoPrevio(Boolean.TRUE.equals(tipo.getRequiereCasoPrevio()))
                             .requiereServicio(!esSugerencia)
                             .permiteEvidencia(!esSugerencia)
                             .build();

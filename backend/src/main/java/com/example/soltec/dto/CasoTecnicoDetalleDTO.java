@@ -13,19 +13,19 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CasoDetalleDTO {
+public class CasoTecnicoDetalleDTO {
 
     private String numeroBoleta;
     private String tipo;
     private String estado;
-    private OffsetDateTime fechaRegistro;
+    private String prioridad;
     private String asunto;
     private String descripcion;
-    private ServicioRecibidoDTO servicioRecibido;
+    private OffsetDateTime fechaRegistro;
     private OffsetDateTime fechaLimiteResolucion;
+    private ClienteContactoDTO cliente;
+    private ServicioRecibidoDTO servicioRecibido;
     private List<AdjuntoDTO> adjuntos;
-
-    // CU-06: unico texto del tecnico que el cliente llega a ver, y solo
-    // existe una vez que el caso paso a Resuelto.
-    private String solucion;
+    private List<AvanceDTO> avances;
+    private List<TransicionDTO> transicionesPermitidas;
 }

@@ -1,7 +1,6 @@
 package com.example.soltec.dto;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,19 +12,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CasoDetalleDTO {
+public class CasoTecnicoResumenDTO {
 
+    private Integer id;
     private String numeroBoleta;
     private String tipo;
-    private String estado;
-    private OffsetDateTime fechaRegistro;
     private String asunto;
-    private String descripcion;
-    private ServicioRecibidoDTO servicioRecibido;
+    private String prioridad;
+    private String estado;
+    private String cliente;
+    private OffsetDateTime fechaRegistro;
     private OffsetDateTime fechaLimiteResolucion;
-    private List<AdjuntoDTO> adjuntos;
-
-    // CU-06: unico texto del tecnico que el cliente llega a ver, y solo
-    // existe una vez que el caso paso a Resuelto.
-    private String solucion;
 }

@@ -11,11 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TipoSolicitudDTO {
+public class TransicionDTO {
 
-    private Integer id;
     private String codigo;
     private String nombre;
-    private boolean requiereServicio;
-    private boolean permiteEvidencia;
 }

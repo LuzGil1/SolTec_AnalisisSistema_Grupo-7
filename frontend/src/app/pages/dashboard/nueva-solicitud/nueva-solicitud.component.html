@@ -84,24 +84,6 @@
             </div>
           }
 
-          @if (tipoSeleccionado?.requiereCasoPrevio) {
-            <div>
-              <label for="casoRelacionadoId" class="block text-sm font-medium text-brand-text-dark mb-1.5">
-                Caso relacionado <span class="text-fuchsia-600">*</span>
-              </label>
-              <select id="casoRelacionadoId" formControlName="casoRelacionadoId"
-                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors">
-                <option [ngValue]="null">Seleccioná el caso previo</option>
-                @for (caso of casosPrevios; track caso.id) {
-                  <option [ngValue]="caso.id">{{ caso.numeroBoleta }} - {{ caso.asunto }}</option>
-                }
-              </select>
-              @if (casoRelacionadoId.invalid && casoRelacionadoId.touched) {
-                <p class="text-xs text-fuchsia-600 mt-1.5">Debe indicar el caso previo al que corresponde su reclamo.</p>
-              }
-            </div>
-          }
-
           <div>
             <label for="asunto" class="block text-sm font-medium text-brand-text-dark mb-1.5">Asunto</label>
             <input id="asunto" type="text" formControlName="asunto" maxlength="30"

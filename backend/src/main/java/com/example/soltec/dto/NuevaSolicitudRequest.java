@@ -19,8 +19,6 @@ public class NuevaSolicitudRequest {
 
     private Integer ordenServicioId;
 
-    private Integer casoRelacionadoId;
-
     @NotBlank(message = "El asunto es obligatorio")
     @Size(max = 150, message = "El asunto no puede superar 150 caracteres")
     private String asunto;

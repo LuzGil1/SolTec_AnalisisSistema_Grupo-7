@@ -11,9 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CasoRelacionadoDTO {
+public class CargaTecnicoDTO {
 
-    private Integer id;
-    private String numeroBoleta;
-    private String asunto;
+    private Long casosAbiertos;
+    private Short capacidadMaxima;
+    private Boolean disponible;
 }

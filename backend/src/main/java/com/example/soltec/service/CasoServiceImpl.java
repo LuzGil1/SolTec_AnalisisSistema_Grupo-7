@@ -5,7 +5,6 @@ import com.example.soltec.dto.AdjuntoArchivoDTO;
 import com.example.soltec.dto.AdjuntoDTO;
 import com.example.soltec.dto.CasoCreadoDTO;
 import com.example.soltec.dto.CasoDetalleDTO;
-import com.example.soltec.dto.CasoRelacionadoDTO;
 import com.example.soltec.dto.CasoResumenDTO;
 import com.example.soltec.dto.NuevaSolicitudRequest;
 import com.example.soltec.dto.ServicioRecibidoDTO;
@@ -77,18 +76,9 @@ public class CasoServiceImpl implements CasoService {
             throw new SolicitudInvalidaException("Debe seleccionar el servicio al que se refiere la denuncia.");
         }
 
-        // RN08: el caso relacionado debe existir y ser del mismo cliente.
-        // El trigger solo exige que no venga vacio; la pertenencia se valida aqui.
-        if (request.getCasoRelacionadoId() != null) {
-            casoRepository.findByIdAndClienteId(request.getCasoRelacionadoId(), clienteId)
-                    .orElseThrow(() -> new SolicitudInvalidaException(
-                            "El caso relacionado no existe o no pertenece a este cliente"));
-        }
-
         Caso caso = Caso.builder()
                 .clienteId(clienteId)
                 .tipoSolicitud(tipo)
-                .casoRelacionadoId(request.getCasoRelacionadoId())
                 .asunto(request.getAsunto())
                 .descripcion(request.getDescripcion())
                 .build();
@@ -194,9 +184,9 @@ public class CasoServiceImpl implements CasoService {
                 .asunto(caso.getAsunto())
                 .descripcion(caso.getDescripcion())
                 .servicioRecibido(aServicioRecibido(caso.getOrdenServicio()))
-                .casoRelacionado(aCasoRelacionado(caso.getCasoRelacionadoId()))
                 .fechaLimiteResolucion(caso.getFechaLimiteResolucion())
                 .adjuntos(adjuntos)
+                .solucion(caso.getSolucion())
                 .build();
     }
 
@@ -243,19 +233,6 @@ public class CasoServiceImpl implements CasoService {
                 .servicio(orden.getServicio().getNombre())
                 .fechaServicio(orden.getFechaServicio())
                 .build();
-    }
-
-    private CasoRelacionadoDTO aCasoRelacionado(Integer casoRelacionadoId) {
-        if (casoRelacionadoId == null) {
-            return null;
-        }
-        return casoRepository.findById(casoRelacionadoId)
-                .map(c -> CasoRelacionadoDTO.builder()
-                        .id(c.getId())
-                        .numeroBoleta(c.getNumeroBoleta())
-                        .asunto(c.getAsunto())
-                        .build())
-                .orElse(null);
     }
 
     private AdjuntoDTO aAdjuntoDTO(Adjunto adjunto) {

@@ -7,7 +7,6 @@ export interface TipoSolicitudDTO {
   id: number;
   codigo: string;
   nombre: string;
-  requiereCasoPrevio: boolean;
   requiereServicio: boolean;
   permiteEvidencia: boolean;
 }

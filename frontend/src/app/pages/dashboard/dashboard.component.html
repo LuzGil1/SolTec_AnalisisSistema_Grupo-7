@@ -63,6 +63,8 @@
         (cancelado)="seleccionar('Inicio')" />
     } @else if (rol === 'CLIENTE' && vistaActual() === 'Mis solicitudes') {
       <app-mis-solicitudes (irANuevaSolicitud)="seleccionar('Nueva solicitud')" />
+    } @else if (rol === 'TECNICO' && vistaActual() === 'Mis casos') {
+      <app-mis-casos />
     } @else {
       <div class="h-full flex items-center justify-center">
         <h1 class="text-3xl md:text-4xl font-bold text-brand-text-dark">

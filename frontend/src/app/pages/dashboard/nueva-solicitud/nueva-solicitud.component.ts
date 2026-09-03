@@ -5,7 +5,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { CatalogoService, TipoSolicitudDTO } from '../../../core/services/catalogo.service';
 import { OrdenServicioService, OrdenServicioDTO } from '../../../core/services/orden-servicio.service';
-import { CasoService, CasoCreadoDTO, CasoResumenDTO, NuevaSolicitudRequest } from '../../../core/services/caso.service';
+import { CasoService, CasoCreadoDTO, NuevaSolicitudRequest } from '../../../core/services/caso.service';
 
 @Component({
   selector: 'app-nueva-solicitud',
@@ -25,7 +25,6 @@ export class NuevaSolicitudComponent implements OnInit {
 
   tipos: TipoSolicitudDTO[] = [];
   ordenes: OrdenServicioDTO[] = [];
-  casosPrevios: CasoResumenDTO[] = [];
   tipoSeleccionado: TipoSolicitudDTO | null = null;
 
   cargandoCatalogos = true;
@@ -41,7 +40,6 @@ export class NuevaSolicitudComponent implements OnInit {
   form = this.fb.group({
     tipoSolicitudId: this.fb.control<number | null>(null, Validators.required),
     ordenServicioId: this.fb.control<number | null>(null),
-    casoRelacionadoId: this.fb.control<number | null>(null),
     asunto: this.fb.control('', [Validators.required, Validators.maxLength(30)]),
     descripcion: this.fb.control('', [Validators.required, Validators.maxLength(150)]),
   });
@@ -50,13 +48,11 @@ export class NuevaSolicitudComponent implements OnInit {
     forkJoin({
       tipos: this.catalogoService.listarTiposSolicitud(),
       ordenes: this.ordenServicioService.listarMias(),
-      casos: this.casoService.listarMisCasos(),
       parametros: this.catalogoService.obtenerParametros(),
     }).subscribe({
-      next: ({ tipos, ordenes, casos, parametros }) => {
+      next: ({ tipos, ordenes, parametros }) => {
         this.tipos = tipos;
         this.ordenes = ordenes;
-        this.casosPrevios = casos;
         this.maxMbAdjunto = parametros.maxMbAdjunto;
         this.cargandoCatalogos = false;
       },
@@ -79,10 +75,6 @@ export class NuevaSolicitudComponent implements OnInit {
     return this.form.controls.ordenServicioId;
   }
 
-  get casoRelacionadoId() {
-    return this.form.controls.casoRelacionadoId;
-  }
-
   get tipoSolicitudId() {
     return this.form.controls.tipoSolicitudId;
   }
@@ -97,23 +89,17 @@ export class NuevaSolicitudComponent implements OnInit {
     this.tipoSeleccionado = this.tipos.find((t) => t.id === id) ?? null;
 
     this.ordenServicioId.setValue(null);
-    this.casoRelacionadoId.setValue(null);
     this.archivoSeleccionado = null;
     this.archivoErrorMensaje = '';
     this.advertenciaTamano = '';
 
     this.ordenServicioId.clearValidators();
-    this.casoRelacionadoId.clearValidators();
 
     if (this.tipoSeleccionado?.codigo === 'DENUNCIA') {
       this.ordenServicioId.setValidators([Validators.required]);
     }
-    if (this.tipoSeleccionado?.requiereCasoPrevio) {
-      this.casoRelacionadoId.setValidators([Validators.required]);
-    }
 
     this.ordenServicioId.updateValueAndValidity();
-    this.casoRelacionadoId.updateValueAndValidity();
   }
 
   onArchivoSeleccionado(evento: Event): void {
@@ -151,7 +137,6 @@ export class NuevaSolicitudComponent implements OnInit {
     const payload: NuevaSolicitudRequest = {
       tipoSolicitudId: valores.tipoSolicitudId!,
       ordenServicioId: valores.ordenServicioId,
-      casoRelacionadoId: valores.casoRelacionadoId,
       asunto: valores.asunto!,
       descripcion: valores.descripcion!,
     };
@@ -187,8 +172,18 @@ export class NuevaSolicitudComponent implements OnInit {
   }
 
   cancelar(): void {
-    if (confirm('¿Deseás cancelar? La información ingresada no se guardará.')) {
-      this.cancelado.emit();
+    if (this.enviando) {
+      return;
     }
+
+    this.form.reset();
+    this.tipoSeleccionado = null;
+    this.archivoSeleccionado = null;
+    this.archivoErrorMensaje = '';
+    this.advertenciaTamano = '';
+    this.errorMensaje = '';
+    this.boletaConfirmada = null;
+
+    this.cancelado.emit();
   }
 }

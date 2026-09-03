@@ -15,7 +15,6 @@ export interface CasoResumenDTO {
 export interface NuevaSolicitudRequest {
   tipoSolicitudId: number;
   ordenServicioId: number | null;
-  casoRelacionadoId: number | null;
   asunto: string;
   descripcion: string;
 }
@@ -40,12 +39,6 @@ export interface ServicioRecibidoDTO {
   fechaServicio: string;
 }
 
-export interface CasoRelacionadoDTO {
-  id: number;
-  numeroBoleta: string;
-  asunto: string;
-}
-
 export interface CasoDetalleDTO {
   numeroBoleta: string;
   tipo: string;
@@ -54,9 +47,9 @@ export interface CasoDetalleDTO {
   asunto: string;
   descripcion: string;
   servicioRecibido: ServicioRecibidoDTO | null;
-  casoRelacionado: CasoRelacionadoDTO | null;
   fechaLimiteResolucion: string | null;
   adjuntos: AdjuntoDTO[];
+  solucion: string | null;
 }
 
 @Injectable({ providedIn: 'root' })

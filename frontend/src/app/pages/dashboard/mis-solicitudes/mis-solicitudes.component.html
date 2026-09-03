@@ -120,20 +120,19 @@
             </div>
           }
 
-          @if (detalleSeleccionado.casoRelacionado) {
-            <div class="rounded-2xl bg-purple-50 px-5 py-4 mb-6">
-              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Solicitud relacionada</p>
-              <p class="text-sm text-brand-text-dark font-semibold">{{ detalleSeleccionado.casoRelacionado.numeroBoleta }}</p>
-              <p class="text-xs text-brand-text-muted mt-0.5">{{ detalleSeleccionado.casoRelacionado.asunto }}</p>
-            </div>
-          }
-
           <div class="mb-6">
             <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Asunto</p>
             <p class="text-sm text-brand-text-dark font-medium mb-4">{{ detalleSeleccionado.asunto }}</p>
             <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Descripción</p>
             <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalleSeleccionado.descripcion }}</p>
           </div>
+
+          @if (detalleSeleccionado.solucion) {
+            <div class="rounded-2xl bg-purple-50 px-5 py-4 mb-6">
+              <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Solución</p>
+              <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalleSeleccionado.solucion }}</p>
+            </div>
+          }
 
           @if (detalleSeleccionado.fechaLimiteResolucion) {
             <div class="mb-6">
