@@ -79,14 +79,14 @@
                 }
               </select>
               @if (ordenServicioId.invalid && ordenServicioId.touched) {
-                <p class="text-xs text-fuchsia-600 mt-1.5">Este campo es obligatorio.</p>
+                <p class="text-xs text-fuchsia-600 mt-1.5">Seleccione el servicio al que se refiere su queja.</p>
               }
             </div>
           }
 
           <div>
             <label for="asunto" class="block text-sm font-medium text-brand-text-dark mb-1.5">Asunto</label>
-            <input id="asunto" type="text" formControlName="asunto" maxlength="30"
+            <input id="asunto" type="text" formControlName="asunto" maxlength="15"
                    placeholder="Resumen breve de tu solicitud"
                    class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-200 focus:outline-none focus:border-brand-purple transition-colors" />
 
@@ -96,14 +96,17 @@
                   <p class="text-xs text-fuchsia-600">Este campo es obligatorio.</p>
                 }
                 @else if (asunto.touched && asunto.errors?.['maxlength']) {
-                  <p class="text-xs text-fuchsia-600">El asunto no puede superar los 30 caracteres.</p>
+                  <p class="text-xs text-fuchsia-600">El asunto no puede superar los 15 caracteres.</p>
+                }
+                @else if (asunto.touched && asunto.errors?.['pattern']) {
+                  <p class="text-xs text-fuchsia-600">No se admiten símbolos especiales. Solo letras, números, espacios, comas, puntos y guiones.</p>
                 }
               </div>
 
               <span class="text-[11px] font-medium"
-                    [class.text-fuchsia-600]="(asunto.value?.length ?? 0) >= 30"
-                    [class.text-brand-text-muted]="(asunto.value?.length ?? 0) < 30">
-                {{ asunto.value?.length ?? 0 }}/30
+                    [class.text-fuchsia-600]="(asunto.value?.length ?? 0) >= 15"
+                    [class.text-brand-text-muted]="(asunto.value?.length ?? 0) < 15">
+                  {{ asunto.value?.length ?? 0 }}/15
               </span>
             </div>
           </div>
@@ -135,9 +138,9 @@
           @if (tipoSeleccionado?.permiteEvidencia) {
             <div>
               <label for="evidencia" class="block text-sm font-medium text-brand-text-dark mb-1.5">Evidencia (opcional)</label>
-              <input id="evidencia" type="file" (change)="onArchivoSeleccionado($event)"
+              <input id="evidencia" type="file" accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf" (change)="onArchivoSeleccionado($event)"
                      class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-2.5 text-sm text-brand-text-dark file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-gradient-primary file:text-white file:text-sm file:font-semibold" />
-              <p class="text-xs text-brand-text-muted mt-1.5">Tamaño máximo por archivo: {{ maxMbAdjunto }} MB</p>
+              <p class="text-xs text-brand-text-muted mt-1.5">Carga de archivo. Formatos admitidos: JPG, PNG, PDF. Tamaño máximo: 2 MB.</p>
               @if (advertenciaTamano) {
                 <p class="flex items-start gap-1.5 text-xs text-fuchsia-600 mt-1.5">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-4 h-4 shrink-0 mt-0.5">

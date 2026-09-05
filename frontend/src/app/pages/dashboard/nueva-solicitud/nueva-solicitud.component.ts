@@ -40,7 +40,11 @@ export class NuevaSolicitudComponent implements OnInit {
   form = this.fb.group({
     tipoSolicitudId: this.fb.control<number | null>(null, Validators.required),
     ordenServicioId: this.fb.control<number | null>(null),
-    asunto: this.fb.control('', [Validators.required, Validators.maxLength(30)]),
+    asunto: this.fb.control('', [
+      Validators.required,
+      Validators.maxLength(15),
+      Validators.pattern(/^[a-zA-ZÁÉÍÓÚÑáéíóúñ0-9 ,.\-]*$/),
+    ]),
     descripcion: this.fb.control('', [Validators.required, Validators.maxLength(150)]),
   });
 
@@ -95,33 +99,71 @@ export class NuevaSolicitudComponent implements OnInit {
 
     this.ordenServicioId.clearValidators();
 
-    if (this.tipoSeleccionado?.codigo === 'DENUNCIA') {
+    if (['QUEJA', 'RECLAMO', 'DENUNCIA'].includes(this.tipoSeleccionado?.codigo ?? '')) {
       this.ordenServicioId.setValidators([Validators.required]);
     }
 
     this.ordenServicioId.updateValueAndValidity();
   }
 
-  onArchivoSeleccionado(evento: Event): void {
+  async onArchivoSeleccionado(evento: Event): Promise<void> {
     const input = evento.target as HTMLInputElement;
     const archivo = input.files?.[0] ?? null;
     this.archivoErrorMensaje = '';
+    this.advertenciaTamano = '';
+    this.archivoSeleccionado = null;
 
-    const maxBytes = this.maxMbAdjunto * 1024 * 1024;
-    if (archivo && archivo.size > maxBytes) {
-      this.advertenciaTamano = `El archivo pesa ${this.formatearMb(archivo.size)} MB. El tamaño máximo permitido es ${this.maxMbAdjunto} MB.`;
-      this.archivoSeleccionado = null;
+    if (!archivo) {
+      return;
+    }
+
+    const maxBytes = 2 * 1024 * 1024;
+    if (archivo.size > maxBytes) {
+      this.advertenciaTamano = 'El archivo excede el tamaño máximo permitido de 2 MB.';
       input.value = '';
       return;
     }
 
-    this.advertenciaTamano = '';
+    if (archivo.size === 0) {
+      this.advertenciaTamano = 'El archivo está vacío o dañado.';
+      input.value = '';
+      return;
+    }
+
+    const extension = archivo.name.split('.').pop()?.toLowerCase();
+    const extensionesPermitidas = ['jpg', 'jpeg', 'png', 'pdf'];
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'application/pdf'];
+
+    if (!extension || !extensionesPermitidas.includes(extension) || !tiposPermitidos.includes(archivo.type)) {
+      this.advertenciaTamano = 'El tipo de archivo no coincide con su contenido.';
+      input.value = '';
+      return;
+    }
+
+    try {
+      const primerosBytes = new Uint8Array(await archivo.slice(0, 8).arrayBuffer());
+      const contenidoValido = extension === 'pdf'
+        ? this.coincideConFirma(primerosBytes, [0x25, 0x50, 0x44, 0x46])
+        : extension === 'png'
+          ? this.coincideConFirma(primerosBytes, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+          : this.coincideConFirma(primerosBytes, [0xff, 0xd8, 0xff]);
+
+      if (!contenidoValido) {
+        this.advertenciaTamano = 'El tipo de archivo no coincide con su contenido.';
+        input.value = '';
+        return;
+      }
+    } catch {
+      this.advertenciaTamano = 'El archivo está vacío o dañado.';
+      input.value = '';
+      return;
+    }
+
     this.archivoSeleccionado = archivo;
   }
 
-  private formatearMb(bytes: number): string {
-    const mb = Math.round((bytes / (1024 * 1024)) * 100) / 100;
-    return mb.toString();
+  private coincideConFirma(bytes: Uint8Array, firma: number[]): boolean {
+    return firma.every((valor, indice) => bytes[indice] === valor);
   }
 
   enviar(): void {
