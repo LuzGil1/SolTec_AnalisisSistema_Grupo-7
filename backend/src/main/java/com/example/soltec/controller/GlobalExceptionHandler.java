@@ -13,12 +13,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -75,6 +79,32 @@ public class GlobalExceptionHandler {
                 .map(FieldError::getDefaultMessage)
                 .collect(Collectors.joining(". "));
         return construir(HttpStatus.BAD_REQUEST, mensaje);
+    }
+
+    // Parametro de URL con formato invalido (p. ej. fechaDesde=abc en los
+    // filtros del supervisor) o cuerpo JSON mal formado: es error del
+    // cliente, no un 500.
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ErrorResponse> parametroInvalido(MethodArgumentTypeMismatchException ex) {
+        return construir(HttpStatus.BAD_REQUEST, "El valor indicado para " + ex.getName() + " no es válido.");
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> cuerpoInvalido(HttpMessageNotReadableException ex) {
+        return construir(HttpStatus.BAD_REQUEST, "La solicitud contiene datos con un formato no válido.");
+    }
+
+    // Sin estos dos, una ruta inexistente o un metodo no soportado caian en
+    // el handler generico y respondian 500 (p. ej. DELETE sobre los
+    // involucrados de una denuncia, que a proposito no existe).
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> rutaInexistente(NoResourceFoundException ex) {
+        return construir(HttpStatus.NOT_FOUND, "El recurso solicitado no existe.");
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> metodoNoPermitido(HttpRequestMethodNotSupportedException ex) {
+        return construir(HttpStatus.METHOD_NOT_ALLOWED, "Operación no permitida sobre este recurso.");
     }
 
     @ExceptionHandler(Exception.class)

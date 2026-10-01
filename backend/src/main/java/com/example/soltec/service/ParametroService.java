@@ -15,6 +15,7 @@ public class ParametroService {
 
     private static final String CLAVE_MAX_MB_ADJUNTO = "MAX_MB_ADJUNTO";
     private static final BigDecimal DEFAULT_MAX_MB_ADJUNTO = BigDecimal.TEN;
+    private static final String CLAVE_HORAS_ALERTA_SIN_ASIGNAR = "HORAS_ALERTA_SIN_ASIGNAR";
 
     private final ParametroRepository parametroRepository;
 
@@ -26,6 +27,16 @@ public class ParametroService {
 
     public long obtenerMaxBytesAdjunto() {
         return obtenerMaxMbAdjunto().multiply(BigDecimal.valueOf(1024L * 1024L)).longValue();
+    }
+
+    // Umbral a partir del cual una solicitud en la bolsa se reporta al
+    // supervisor; lo aplica vw_solicitudes_sin_asignar, aqui solo se lee
+    // para mostrarlo en pantalla.
+    public BigDecimal obtenerHorasAlertaSinAsignar() {
+        return parametroRepository.findByClave(CLAVE_HORAS_ALERTA_SIN_ASIGNAR)
+                .map(Parametro::getValor)
+                .map(BigDecimal::stripTrailingZeros)
+                .orElse(null);
     }
 
     public String mensajeArchivoExcedeTamano() {

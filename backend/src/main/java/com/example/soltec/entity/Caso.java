@@ -83,4 +83,9 @@ public class Caso {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orden_servicio_id")
     private OrdenServicio ordenServicio;
+
+    // Supervisor que atiende directamente un caso escalado (db/11). Lo
+    // escribe SupervisorAtencionServiceImpl con UPDATE nativo.
+    @Column(name = "supervisor_responsable_id", insertable = false, updatable = false)
+    private Integer supervisorResponsableId;
 }

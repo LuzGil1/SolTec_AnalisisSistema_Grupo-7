@@ -31,4 +31,8 @@ public class Tecnico {
 
     @Column(nullable = false)
     private Boolean disponible;
+
+    // lo escribe unicamente fn_cambiar_disponibilidad (db/10_supervisor.sql)
+    @Column(name = "motivo_no_disponible", length = 200, insertable = false, updatable = false)
+    private String motivoNoDisponible;
 }

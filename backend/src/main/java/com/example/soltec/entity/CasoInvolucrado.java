@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // La llena automaticamente el trigger tg_caso_marcar_involucrado cuando una
-// denuncia referencia una orden de servicio. La aplicacion nunca inserta aqui.
+// denuncia referencia una orden de servicio, y fn_devolver_escalamiento con el
+// tecnico que escalo. La aplicacion solo inserta cuando el supervisor registra
+// personal adicional en una denuncia (CU Atencion de Denuncias, FA05). Nunca
+// se borra: el personal involucrado no se retira (RN04).
 @Entity
 @Table(name = "caso_involucrado", schema = "soltec")
 @Getter
