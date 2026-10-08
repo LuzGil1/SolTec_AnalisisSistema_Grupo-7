@@ -1,0 +1,153 @@
+<div class="max-w-7xl mx-auto w-full">
+
+  <h1 class="text-2xl font-bold text-brand-text-dark mb-1">Panel del supervisor</h1>
+ <!-- <p class="text-sm text-brand-text-muted mb-8">Situación general de las solicitudes de soporte.</p> -->
+
+  <!-- Tarjetas de resumen -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+    @for (tarjeta of tarjetas; track tarjeta.destino) {
+      <button type="button" (click)="irA.emit(tarjeta.destino)"
+              class="glass rounded-2xl px-6 py-5 text-left shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(126,34,206,0.18)] group">
+        <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">{{ tarjeta.titulo }}</p>
+        <div class="flex items-end justify-between">
+          <p class="text-3xl font-bold text-[#7e22ce]">{{ resumen ? tarjeta.valor(resumen) : '—' }}</p>
+          <span class="text-xs font-semibold text-brand-purple opacity-70 group-hover:opacity-100 transition-opacity">Ver listado →</span>
+        </div>
+      </button>
+    }
+  </div>
+
+  <!-- Filtros -->
+  <div class="glass rounded-3xl px-6 py-5 mb-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Tipo
+        <select [(ngModel)]="filtros.tipo" (ngModelChange)="recargar()"
+                class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark focus:outline-none focus:border-brand-purple">
+          <option [ngValue]="null">Todos</option>
+          @for (tipo of tipos; track tipo.codigo) {
+            <option [ngValue]="tipo.codigo">{{ tipo.nombre }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Estado
+        <select [(ngModel)]="filtros.estado" (ngModelChange)="recargar()"
+                class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark focus:outline-none focus:border-brand-purple">
+          <option [ngValue]="null">Todos</option>
+          @for (estado of estados; track estado.codigo) {
+            <option [ngValue]="estado.codigo">{{ estado.nombre }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Técnico
+        <select [(ngModel)]="filtros.tecnicoId" (ngModelChange)="recargar()"
+                class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark focus:outline-none focus:border-brand-purple">
+          <option [ngValue]="null">Todos</option>
+          @for (tecnico of tecnicos; track tecnico.id) {
+            <option [ngValue]="tecnico.id">{{ tecnico.nombre }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Desde
+        <input type="date" [(ngModel)]="filtros.fechaDesde" (ngModelChange)="recargar()"
+               class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark focus:outline-none focus:border-brand-purple" />
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Hasta
+        <input type="date" [(ngModel)]="filtros.fechaHasta" (ngModelChange)="recargar()"
+               class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark focus:outline-none focus:border-brand-purple" />
+      </label>
+
+      <label class="flex flex-col gap-1 text-xs font-semibold text-brand-text-muted">
+        Boleta
+        <input type="text" [(ngModel)]="filtros.boleta" (ngModelChange)="recargar()" placeholder="SOL-2026-..."
+               class="rounded-2xl border-2 border-purple-100 bg-white/80 px-3 py-2 text-sm font-normal text-brand-text-dark placeholder:text-purple-300 focus:outline-none focus:border-brand-purple" />
+      </label>
+    </div>
+
+    <div class="flex items-center justify-between mt-4">
+      <p class="text-xs text-brand-text-muted">
+        @if (!cargando && !error) {
+          {{ casos.length }} solicitud{{ casos.length === 1 ? '' : 'es' }}
+        }
+      </p>
+      <button type="button" (click)="limpiarFiltros()" [disabled]="!hayFiltros"
+              class="text-sm font-semibold text-brand-text-dark px-5 py-2 rounded-full border-2 border-purple-100 transition-colors hover:bg-purple-50 disabled:opacity-50 disabled:cursor-not-allowed">
+        Limpiar filtros
+      </button>
+    </div>
+  </div>
+
+  <!-- Listado general -->
+  @if (error) {
+    <div class="glass rounded-3xl px-8 py-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+      <p class="text-fuchsia-600 text-sm">{{ error }}</p>
+    </div>
+  } @else if (cargando && casos.length === 0) {
+    <p class="text-center text-brand-text-muted py-10">Cargando solicitudes...</p>
+  } @else if (casos.length === 0) {
+    <div class="glass rounded-3xl px-8 py-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+      <p class="text-brand-text-muted">
+        {{ hayFiltros ? 'No se encontraron solicitudes con los criterios seleccionados.' : 'No existen solicitudes registradas.' }}
+      </p>
+    </div>
+  } @else {
+    <div class="glass rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-x-auto transition-opacity"
+         [class.opacity-60]="cargando">
+      <table class="w-full text-sm text-left">
+        <thead>
+          <tr class="border-b border-purple-100 text-brand-text-muted">
+            <th class="px-4 py-4 font-semibold">Boleta</th>
+            <th class="px-4 py-4 font-semibold">Tipo</th>
+            <th class="px-4 py-4 font-semibold">Asunto</th>
+            <th class="px-4 py-4 font-semibold">Cliente</th>
+            <th class="px-4 py-4 font-semibold">Técnico</th>
+            <th class="px-4 py-4 font-semibold">Estado</th>
+            <th class="px-4 py-4 font-semibold">Vence</th>
+            <th class="px-4 py-4 font-semibold text-right">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (caso of casos; track caso.id) {
+            <tr class="border-b border-purple-50 last:border-0">
+              <td class="px-4 py-4 font-semibold text-brand-text-dark whitespace-nowrap">{{ caso.numeroBoleta }}</td>
+              <td class="px-4 py-4 text-brand-text-dark">{{ caso.tipo }}</td>
+              <td class="px-4 py-4 text-brand-text-dark max-w-[11rem] truncate" [title]="caso.asunto">{{ caso.asunto }}</td>
+              <td class="px-4 py-4 text-brand-text-dark">{{ caso.cliente }}</td>
+              <td class="px-4 py-4 text-brand-text-dark">{{ caso.tecnico ?? '' }}</td>
+              <td class="px-4 py-4">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-brand-text-dark">
+                  {{ caso.estado }}
+                </span>
+              </td>
+              <td class="px-4 py-4 whitespace-nowrap">
+                <span [class]="vencimiento(caso).clase">{{ vencimiento(caso).texto }}</span>
+              </td>
+              <td class="px-4 py-4 text-right">
+                <button type="button" (click)="abrirDetalle(caso.id)" title="Ver detalle"
+                        class="inline-flex items-center justify-center w-9 h-9 rounded-full text-[#7e22ce] hover:bg-purple-50 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>
+
+@if (casoIdSeleccionado !== null) {
+  <app-detalle-caso-supervisor [casoId]="casoIdSeleccionado" (cerrado)="cerrarDetalle()" />
+}

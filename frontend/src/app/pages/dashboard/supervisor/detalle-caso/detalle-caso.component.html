@@ -1,0 +1,222 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-text-dark/40 backdrop-blur-sm"
+     (click)="cerrar()">
+  <div class="glass bg-white/90 rounded-3xl shadow-[0_20px_60px_rgb(0,0,0,0.15)] w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+       (click)="$event.stopPropagation()">
+
+    @if (cargando) {
+      <div class="px-8 py-16 text-center text-brand-text-muted">Cargando detalle...</div>
+    }
+
+    @if (error) {
+      <div class="px-8 py-16 text-center">
+        <p class="text-brand-text-muted mb-6">No se pudo cargar el detalle de este caso.</p>
+        <button type="button" (click)="cerrar()"
+                class="text-brand-text-dark font-semibold text-sm px-6 py-3 rounded-full transition-colors hover:bg-purple-50">
+          Cerrar
+        </button>
+      </div>
+    }
+
+    @if (detalle) {
+      <div class="px-8 py-8">
+
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">{{ detalle.tipo }}</p>
+            <h2 class="text-2xl font-bold text-brand-text-dark">{{ detalle.numeroBoleta }}</h2>
+            @if (detalle.casoRelacionadoBoleta) {
+              <p class="text-xs text-brand-text-muted mt-1">Referencia el caso {{ detalle.casoRelacionadoBoleta }}</p>
+            }
+          </div>
+          <div class="flex flex-col items-end gap-2 shrink-0">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-brand-text-dark">
+              {{ detalle.estado }}
+            </span>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-brand-lavender text-brand-text-dark">
+              {{ detalle.prioridad }}
+            </span>
+          </div>
+        </div>
+
+        <!-- RN02 del CU Revision de Escalamientos: el motivo es el fundamento de la decision -->
+        @if (detalle.escaladaPor) {
+          <div class="rounded-2xl border-2 border-[#7e22ce]/30 bg-[#7e22ce]/5 px-5 py-4 mb-6">
+            <p class="text-xs font-semibold text-[#7e22ce] uppercase tracking-wide mb-1">Motivo del escalamiento</p>
+            <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalle.motivoEscalamiento }}</p>
+            <p class="text-xs text-brand-text-muted mt-2">
+              Escalada por {{ detalle.escaladaPor }}
+              @if (detalle.fechaEscalamiento) {
+                el {{ detalle.fechaEscalamiento | date: 'dd/MM/yyyy HH:mm' }}
+              }
+            </p>
+          </div>
+        }
+
+        <div class="mb-6">
+          <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Asunto</p>
+          <p class="text-sm text-brand-text-dark font-medium mb-4">{{ detalle.asunto }}</p>
+          <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-1">Descripción</p>
+          <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalle.descripcion }}</p>
+        </div>
+
+        <!-- Fechas -->
+        <div class="grid grid-cols-2 gap-x-6 gap-y-3 rounded-2xl bg-purple-50 px-5 py-4 mb-6 text-sm">
+          <div>
+            <p class="text-xs font-semibold text-brand-text-muted">Registro</p>
+            <p class="text-brand-text-dark">{{ detalle.fechaRegistro | date: 'dd/MM/yyyy HH:mm' }}</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-brand-text-muted">Fecha límite</p>
+            <p class="text-brand-text-dark">
+              {{ detalle.fechaLimiteResolucion ? (detalle.fechaLimiteResolucion | date: 'dd/MM/yyyy HH:mm') : 'Sin vencimiento' }}
+            </p>
+          </div>
+          @if (detalle.fechaAsignacion) {
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted">Asignación</p>
+              <p class="text-brand-text-dark">{{ detalle.fechaAsignacion | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          }
+          @if (detalle.fechaResolucion) {
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted">Resolución</p>
+              <p class="text-brand-text-dark">{{ detalle.fechaResolucion | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          }
+          @if (detalle.fechaCierre) {
+            <div>
+              <p class="text-xs font-semibold text-brand-text-muted">Cierre</p>
+              <p class="text-brand-text-dark">{{ detalle.fechaCierre | date: 'dd/MM/yyyy HH:mm' }}</p>
+            </div>
+          }
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+          <div class="rounded-2xl bg-purple-50 px-5 py-4">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Cliente</p>
+            <p class="text-sm text-brand-text-dark font-medium">{{ detalle.cliente.nombre }}</p>
+            <p class="text-xs text-brand-text-muted mt-0.5">{{ detalle.cliente.correo }}</p>
+            @if (detalle.cliente.telefono) {
+              <p class="text-xs text-brand-text-muted mt-0.5">{{ detalle.cliente.telefono }}</p>
+            }
+            @if (detalle.cliente.direccion) {
+              <p class="text-xs text-brand-text-muted mt-0.5">{{ detalle.cliente.direccion }}</p>
+            }
+          </div>
+
+          <div class="rounded-2xl bg-purple-50 px-5 py-4">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Técnico asignado</p>
+            @if (detalle.tecnico) {
+              <p class="text-sm text-brand-text-dark font-medium">{{ detalle.tecnico.nombre }}</p>
+              <p class="text-xs text-brand-text-muted mt-0.5">{{ detalle.tecnico.correo }}</p>
+              @if (detalle.tecnico.telefono) {
+                <p class="text-xs text-brand-text-muted mt-0.5">{{ detalle.tecnico.telefono }}</p>
+              }
+            } @else if (detalle.supervisorResponsable) {
+              <p class="text-sm text-brand-text-dark font-medium">{{ detalle.supervisorResponsable }}</p>
+              <p class="text-xs text-brand-text-muted mt-0.5">Atención directa del supervisor</p>
+            } @else {
+              <p class="text-sm text-brand-text-muted">Sin técnico asignado</p>
+            }
+          </div>
+        </div>
+
+        @if (detalle.servicioRecibido) {
+          <div class="rounded-2xl bg-purple-50 px-5 py-4 mb-6">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Servicio recibido</p>
+            <p class="text-sm text-brand-text-dark font-medium">
+              {{ detalle.servicioRecibido.numeroOrden }} - {{ detalle.servicioRecibido.servicio }}
+            </p>
+            <p class="text-xs text-brand-text-muted mt-0.5">
+              {{ detalle.servicioRecibido.fechaServicio | date: 'dd/MM/yyyy' }}
+              @if (detalle.tecnicoServicio) {
+                · Atendido por {{ detalle.tecnicoServicio }}
+              }
+            </p>
+          </div>
+        }
+
+        <!-- RN04 del CU Atencion de Denuncias: no pueden ver ni recibir el caso -->
+        @if (detalle.involucrados.length > 0) {
+          <div class="rounded-2xl border-2 border-fuchsia-100 px-5 py-4 mb-6">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Personal involucrado</p>
+            <div class="flex flex-col gap-2">
+              @for (involucrado of detalle.involucrados; track involucrado.usuarioId) {
+                <div>
+                  <p class="text-sm text-brand-text-dark font-medium">
+                    {{ involucrado.nombre }} <span class="text-xs font-normal text-brand-text-muted">· {{ involucrado.rol }}</span>
+                  </p>
+                  @if (involucrado.motivo) {
+                    <p class="text-xs text-brand-text-muted">{{ involucrado.motivo }}</p>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (detalle.solucion) {
+          <div class="rounded-2xl border-2 border-purple-100 px-5 py-4 mb-6">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Solución</p>
+            <p class="text-sm text-brand-text-dark whitespace-pre-line">{{ detalle.solucion }}</p>
+          </div>
+        }
+
+        @if (detalle.adjuntos.length > 0) {
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Evidencia adjunta</p>
+            <div class="flex flex-col gap-3">
+              @for (adjunto of detalle.adjuntos; track adjunto.id) {
+                <div class="rounded-2xl border-2 border-purple-100 px-4 py-3">
+                  @if (esImagen(adjunto) && previewUrls[adjunto.id]) {
+                    <img [src]="previewUrls[adjunto.id]" [alt]="adjunto.nombreArchivo" class="max-h-56 rounded-xl mb-2 mx-auto" />
+                  }
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="text-sm text-brand-text-dark truncate">{{ adjunto.nombreArchivo }}</span>
+                    <button type="button" (click)="descargarAdjunto(adjunto)"
+                            class="text-xs font-semibold text-brand-purple hover:underline shrink-0">
+                      Descargar
+                    </button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Historial de avances -->
+        <div class="mb-2">
+          <p class="text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-3">Historial de avances</p>
+          @if (detalle.avances.length === 0) {
+            <p class="text-sm text-brand-text-muted">Aún no hay avances registrados.</p>
+          } @else {
+            <div class="flex flex-col gap-4 border-l-2 border-purple-100 pl-4">
+              @for (avance of detalle.avances; track $index) {
+                <div class="relative">
+                  <span class="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-brand-purple"></span>
+                  <p class="text-xs text-brand-text-muted">
+                    {{ avance.fecha | date: 'dd/MM/yyyy HH:mm' }} · {{ avance.autor }}
+                    @if (avance.estadoNuevo) {
+                      <span class="text-brand-purple font-semibold"> · {{ avance.estadoAnterior }} → {{ avance.estadoNuevo }}</span>
+                    }
+                  </p>
+                  <p class="text-sm text-brand-text-dark whitespace-pre-line mt-0.5">{{ avance.comentario }}</p>
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Acciones de la pantalla que abrio la ventana -->
+        <ng-content />
+
+        <div class="flex justify-end mt-6">
+          <button type="button" (click)="cerrar()"
+                  class="text-brand-text-dark font-semibold text-sm px-6 py-3 rounded-full transition-colors hover:bg-purple-50">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,162 @@
+<div class="max-w-6xl mx-auto w-full">
+
+  <h1 class="text-2xl font-bold text-brand-text-dark mb-1">Técnicos de soporte</h1>
+  <p class="text-sm text-brand-text-muted mb-8">Disponibilidad y capacidad de atención de cada técnico.</p>
+
+  @if (mensajeExito) {
+    <div class="rounded-2xl bg-emerald-50 border border-emerald-200 px-5 py-3 mb-6 flex items-start justify-between gap-4">
+      <p class="text-sm text-emerald-800">{{ mensajeExito }}</p>
+      <button type="button" (click)="mensajeExito = ''" class="text-xs font-semibold text-emerald-700 hover:underline shrink-0">Cerrar</button>
+    </div>
+  }
+
+  @if (cargando) {
+    <p class="text-center text-brand-text-muted">Cargando técnicos...</p>
+  }
+
+  @if (error) {
+    <p class="text-center text-brand-text-muted">No se pudo cargar el listado de técnicos en este momento.</p>
+  }
+
+  @if (!cargando && !error) {
+    @if (tecnicos.length === 0) {
+      <div class="glass rounded-3xl px-8 py-10 text-center shadow-[0_8px_30px_rgb(0,0,0,0.06)]">
+        <p class="text-brand-text-muted">No hay técnicos registrados.</p>
+      </div>
+    } @else {
+      <div class="glass rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead>
+            <tr class="border-b border-purple-100 text-brand-text-muted">
+              <th class="px-6 py-4 font-semibold">Técnico</th>
+              <th class="px-6 py-4 font-semibold">Especialidades</th>
+              <th class="px-6 py-4 font-semibold">Carga actual</th>
+              <th class="px-6 py-4 font-semibold">Disponibilidad</th>
+              <th class="px-6 py-4 font-semibold text-right">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (tecnico of tecnicos; track tecnico.id) {
+              <tr class="border-b border-purple-50 last:border-0 align-top">
+                <td class="px-6 py-4">
+                  <p class="font-semibold text-brand-text-dark">{{ tecnico.nombre }}</p>
+                  <p class="text-xs text-brand-text-muted">{{ tecnico.correo }}</p>
+                </td>
+                <td class="px-6 py-4 text-brand-text-dark">{{ tecnico.especialidades || 'Sin especialidades' }}</td>
+                <td class="px-6 py-4 min-w-[10rem]">
+                  <p class="text-brand-text-dark font-semibold mb-1.5">{{ tecnico.casosAbiertos }} de {{ tecnico.capacidadMaxima }}</p>
+                  <div class="h-2 rounded-full bg-purple-100 overflow-hidden">
+                    <div class="h-full rounded-full bg-[#7e22ce]" [style.width.%]="porcentajeCarga(tecnico)"></div>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  @if (tecnico.disponible) {
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Disponible</span>
+                  } @else {
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-fuchsia-100 text-fuchsia-700">No disponible</span>
+                    @if (tecnico.motivoNoDisponible) {
+                      <p class="text-xs text-brand-text-muted mt-1.5 max-w-[14rem]">{{ tecnico.motivoNoDisponible }}</p>
+                    }
+                  }
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex flex-wrap justify-end gap-2">
+                    @if (tecnico.disponible) {
+                      <button type="button" (click)="abrir('noDisponible', tecnico)"
+                              class="text-xs font-semibold text-brand-text-dark px-4 py-2 rounded-full border-2 border-purple-100 transition-colors hover:bg-purple-50 whitespace-nowrap">
+                        Marcar no disponible
+                      </button>
+                    } @else {
+                      <button type="button" (click)="abrir('disponible', tecnico)"
+                              class="text-xs font-semibold text-brand-text-dark px-4 py-2 rounded-full border-2 border-purple-100 transition-colors hover:bg-purple-50 whitespace-nowrap">
+                        Marcar disponible
+                      </button>
+                    }
+                    <button type="button" (click)="abrir('capacidad', tecnico)"
+                            class="text-xs font-semibold text-white px-4 py-2 rounded-full bg-[#7e22ce] transition-all shadow-[0_4px_14px_rgba(126,34,206,0.3)] hover:-translate-y-0.5 whitespace-nowrap">
+                      Modificar capacidad
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+</div>
+
+@if (accion && seleccionado) {
+  <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-text-dark/40 backdrop-blur-sm"
+       (click)="cerrarModal()">
+    <div class="glass bg-white/90 rounded-3xl shadow-[0_20px_60px_rgb(0,0,0,0.15)] w-full max-w-lg px-8 py-8"
+         (click)="$event.stopPropagation()">
+
+      @if (accion === 'noDisponible') {
+        <h2 class="text-xl font-bold text-brand-text-dark mb-4">Marcar a {{ seleccionado.nombre }} como no disponible</h2>
+
+        <div class="rounded-2xl bg-amber-50 border border-amber-200 px-4 py-3 mb-5">
+          <p class="text-sm text-amber-800">
+            Los casos que tiene asignados y que aún no ha resuelto regresarán a la bolsa de demanda y el sistema los
+            redistribuirá entre los demás técnicos. No recibirá solicitudes nuevas hasta que lo marque disponible otra vez.
+          </p>
+        </div>
+
+        <label for="motivo" class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Motivo</label>
+        <textarea id="motivo" rows="3" [(ngModel)]="motivo" [maxlength]="maxMotivo"
+                  placeholder="Por ejemplo: vacaciones, incapacidad, capacitación"
+                  class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-300 focus:outline-none focus:border-brand-purple transition-colors resize-none"></textarea>
+        <p class="text-xs text-brand-text-muted text-right mt-1">{{ motivo.length }} / {{ maxMotivo }}</p>
+      }
+
+      @if (accion === 'disponible') {
+        <h2 class="text-xl font-bold text-brand-text-dark mb-4">Marcar a {{ seleccionado.nombre }} como disponible</h2>
+        <p class="text-sm text-brand-text-dark mb-2">
+          El técnico se incorporará de nuevo a la distribución y el sistema le asignará solicitudes de la bolsa
+          conforme a su capacidad disponible.
+        </p>
+        @if (seleccionado.motivoNoDisponible) {
+          <p class="text-xs text-brand-text-muted">Motivo actual: {{ seleccionado.motivoNoDisponible }}</p>
+        }
+      }
+
+      @if (accion === 'capacidad') {
+        <h2 class="text-xl font-bold text-brand-text-dark mb-1">Modificar capacidad</h2>
+        <p class="text-sm text-brand-text-muted mb-5">
+          {{ seleccionado.nombre }} tiene {{ seleccionado.casosAbiertos }} caso{{ seleccionado.casosAbiertos === 1 ? '' : 's' }}
+          abierto{{ seleccionado.casosAbiertos === 1 ? '' : 's' }} con una capacidad de {{ seleccionado.capacidadMaxima }}.
+        </p>
+
+        <label for="capacidad" class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">
+          Cantidad máxima de casos simultáneos
+        </label>
+        <input id="capacidad" type="number" min="1" step="1" [(ngModel)]="capacidad"
+               class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors" />
+
+        @if (reduceCapacidad) {
+          <p class="text-xs text-brand-text-muted mt-2">
+            El técnico conserva los casos que ya tiene; solo dejará de recibir nuevos hasta que su carga baje de la nueva capacidad.
+          </p>
+        }
+      }
+
+      @if (errorModal) {
+        <p class="text-xs text-fuchsia-600 mt-3">{{ errorModal }}</p>
+      }
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button type="button" (click)="cerrarModal()" [disabled]="guardando"
+                class="text-brand-text-dark font-semibold text-sm px-6 py-3 rounded-full transition-colors hover:bg-purple-50 disabled:opacity-60">
+          Cancelar
+        </button>
+        <button type="button" [disabled]="guardando || (accion === 'noDisponible' && !motivo.trim())"
+                (click)="accion === 'capacidad' ? confirmarCapacidad() : confirmarDisponibilidad()"
+                class="text-white font-semibold text-sm px-6 py-3 rounded-full bg-[#7e22ce] transition-all shadow-[0_6px_18px_rgba(126,34,206,0.35)] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-y-0">
+          {{ guardando ? 'Guardando...' : 'Confirmar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

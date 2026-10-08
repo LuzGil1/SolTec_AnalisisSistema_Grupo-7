@@ -65,6 +65,18 @@
       <app-mis-solicitudes (irANuevaSolicitud)="seleccionar('Nueva solicitud')" />
     } @else if (rol === 'TECNICO' && vistaActual() === 'Mis casos') {
       <app-mis-casos />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Inicio') {
+      <app-inicio-supervisor (irA)="seleccionar($event)" />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Denuncias') {
+      <app-denuncias />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Escalamientos') {
+      <app-escalamientos />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Sin asignar') {
+      <app-sin-asignar (irA)="seleccionar($event)" />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Sugerencias') {
+      <app-sugerencias />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Técnicos') {
+      <app-tecnicos />
     }
   </main>
 
