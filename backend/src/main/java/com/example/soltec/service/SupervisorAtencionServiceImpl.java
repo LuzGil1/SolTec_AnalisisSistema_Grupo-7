@@ -176,6 +176,7 @@ public class SupervisorAtencionServiceImpl implements SupervisorAtencionService 
                         .tipo(e.getTipo())
                         .asunto(e.getAsunto())
                         .cliente(e.getCliente())
+                        .prioridad(e.getPrioridad())
                         .escaladaPor(e.getEscaladaPor())
                         .motivoEscalamiento(e.getMotivoEscalamiento())
                         .estadoCodigo(e.getEstadoCodigo())

@@ -1,0 +1,171 @@
+DIAGNÓSTICO — "No existen solicitudes escaladas"
+Fecha: 2026-10-13
+
+=====================================================================
+1. BASE DE DATOS
+=====================================================================
+
+Consulta ejecutada contra soltec_db (usuario postgres):
+
+  SET search_path TO soltec, public;
+  SELECT c.id, c.numero_boleta, e.codigo AS estado, c.tecnico_asignado_id
+  FROM caso c JOIN estado_caso e ON e.id = c.estado_id
+  WHERE e.codigo = 'ESCALADO';
+
+Resultado: 0 filas.
+
+Verificaciones adicionales:
+- estado_caso SÍ tiene el código ESCALADO (id 8, nombre "Escalado"). No es un
+  problema de catálogo.
+- Distribución real de casos por estado en esta base:
+    ASIGNADO     4
+    EN_BACKLOG   1
+    EN_REVISION  1
+  Ningún caso ha pasado nunca por ESCALADO.
+- seguimiento no tiene NINGÚN registro con estado_nuevo = ESCALADO (0 filas).
+  Es decir: en el historial de esta base, jamás se ejecutó un escalamiento.
+- vw_escalamientos (la vista que alimenta el listado) devuelve 0 filas,
+  consistente con lo anterior.
+
+CONCLUSIÓN: no hay un bug de datos ni de filtro. La base simplemente no
+tiene casos escalados porque la acción de escalar nunca se usó.
+
+=====================================================================
+2. BACKEND
+=====================================================================
+
+Corrección al enunciado: el endpoint NO vive en SupervisorController.java
+(ese archivo solo tiene /resumen, /filtros, /casos, /sin-asignar, /tecnicos).
+El endpoint real es:
+
+  GET /api/supervisor/escalamientos
+  → SupervisorAtencionController.escalamientos() (línea 74-77)
+  → SupervisorAtencionServiceImpl.listarEscalamientos() (línea 170-188)
+  → CasoRepository.listarEscalamientos() (query nativa, línea 122-132)
+
+Query exacta ejecutada:
+
+  SELECT caso_id AS casoId, numero_boleta AS numeroBoleta, tipo, asunto, cliente,
+         escalada_por AS escaladaPor, motivo_escalamiento AS motivoEscalamiento,
+         fecha_escalamiento AS fechaEscalamiento, estado_codigo AS estadoCodigo, estado,
+         supervisor_responsable_id AS supervisorResponsableId,
+         supervisor_responsable AS supervisorResponsable, fecha_limite AS fechaLimite
+  FROM soltec.vw_escalamientos
+  ORDER BY fecha_limite ASC NULLS LAST, fecha_registro ASC
+
+Y la vista vw_escalamientos (db/11_supervisor_atencion.sql, línea 80-111):
+
+  WHERE e.codigo = 'ESCALADO'
+     OR (c.supervisor_responsable_id IS NOT NULL AND NOT e.es_final)
+
+Revisión puntual de los tres puntos pedidos:
+
+- Filtro por código de estado: filtra por e.codigo = 'ESCALADO' (no por id,
+  bien hecho — no depende de que el id 8 se mantenga).
+- Filtro por supervisor_responsable_id: SÍ existe una condición con ese
+  campo, pero es un OR, no un AND. Un caso recién escalado (estado ESCALADO,
+  supervisor_responsable_id en NULL) SÍ entra por la primera rama del OR.
+  No hay bug de exclusión aquí — está escrito correctamente para el caso que
+  preocupaba.
+- Filtro por fecha / SLA: no existe ningún filtro de fecha en el WHERE. El
+  ORDER BY sí es por fecha_limite, pero ordenar no excluye filas.
+
+CONCLUSIÓN: el backend (controller → service → repository → vista) está
+bien. No es la causa del mensaje "No existen solicitudes escaladas". Esa
+leyenda es simplemente la respuesta correcta a un arreglo vacío, porque en
+la base no hay (y nunca hubo) ningún caso en ESCALADO.
+
+Dato relevante para la parte 4: el backend YA tiene lista la transición
+ASIGNADO/EN_PROCESO → ESCALADO implementada en TecnicoCasoServiceImpl
+(TRANSICIONES, línea 51-58) y ya libera al técnico (tecnico_asignado_id a
+NULL, LIBERA_CAPACIDAD incluye "ESCALADO", línea 61 y 242-258). O sea: el
+camino para que un caso llegue a ESCALADO sí existe en el backend. El
+problema está en el frontend del técnico (ver punto 4).
+
+=====================================================================
+3. FRONTEND (pantalla del supervisor)
+=====================================================================
+
+frontend/src/app/pages/dashboard/supervisor/escalamientos/escalamientos.component.ts
+llama a supervisorService.listarEscalamientos() en ngOnInit → cargarLista(),
+que hace GET a /api/supervisor/escalamientos (supervisor.service.ts línea
+251-252) y asigna el arreglo recibido a `this.escalamientos`.
+
+El HTML (escalamientos.component.html, línea 24-27):
+
+  @if (escalamientos.length === 0) {
+    <p>No existen solicitudes escaladas.</p>
+  }
+
+Ese texto solo aparece cuando `cargando` es false, `error` es false, Y el
+arreglo llegó vacío. Si la petición fallara, se vería el otro mensaje ("No
+se pudo cargar el listado..."), no este. Confirmado con la petición manual
+contra la base: el arreglo viene vacío legítimamente, no por un error de
+red ni de parseo. El componente pinta bien lo que recibe.
+
+CONCLUSIÓN: el frontend del supervisor también está bien. El mensaje es
+honesto: no hay nada que mostrar porque no hay nada escalado.
+
+=====================================================================
+4. FLUJO DEL TÉCNICO (CU-06, pantalla "Mis casos")
+=====================================================================
+
+Archivo: frontend/src/app/pages/dashboard/mis-casos/mis-casos.component.ts/html
+
+Lo que SÍ existe:
+- El backend expone la transición ESCALADO como una más de las permitidas
+  (TecnicoCasoServiceImpl.TRANSICIONES: desde ASIGNADO y EN_PROCESO).
+  CasoTecnicoDetalleDTO.transicionesPermitidas la incluye cuando aplica.
+- El HTML (línea 215-221) itera TODAS las transiciones permitidas y genera
+  un botón genérico por cada una, con el mismo estilo morado y la misma
+  caja de texto compartida ("Registrar avance"). Si el estado del caso lo
+  permite, entre esos botones aparece uno con la etiqueta "Escalado" (el
+  nombre de estado_caso), que al hacer clic llama a registrarAvance(casoId,
+  {comentario: avanceTexto, nuevoEstado: 'ESCALADO'}).
+
+Lo que NO existe (tal cual lo encontré, sin maquillar):
+- No hay un botón "Escalar" dedicado, distinto o destacado. Es un botón más
+  entre "Resuelto", "Improcedente", etc., con la etiqueta genérica del
+  estado ("Escalado"), fácil de pasar por alto o de no identificar como "la
+  acción de escalar".
+- No hay un campo de motivo específico para escalar. Se reutiliza el mismo
+  textarea "Registrar avance" que sirve para cualquier transición y para
+  "solo registrar avance sin cambiar estado".
+- No hay validación de longitud mínima. RegistrarAvanceRequest.comentario
+  solo tiene @NotBlank (dto/RegistrarAvanceRequest.java línea 15), y el
+  frontend solo chequea que no esté vacío (mis-casos.component.ts línea
+  168-171). Un técnico puede "escalar" con un comentario de un solo
+  carácter.
+- No hay ningún paso de confirmación antes de escalar, a pesar de ser una
+  acción sin vuelta atrás para el técnico (TRANSICIONES["ESCALADO"] = [],
+  línea 55: una vez escalado, el técnico ya no puede hacer nada más con ese
+  caso).
+
+CONCLUSIÓN de este punto: la acción de escalar NO está ausente a nivel de
+permisos/backend, pero a nivel de UX está tan diluida dentro del flujo
+genérico de "registrar avance" que, en la práctica, nadie la usó nunca
+(0 registros en el historial lo confirman). No es que "solo se pueda crear
+por SQL" — se puede crear desde la pantalla actual, pero de forma tan poco
+clara que equivale a que no exista para efectos prácticos. Por eso nunca hay
+nada que mostrarle al supervisor.
+
+=====================================================================
+RESUMEN EJECUTIVO
+=====================================================================
+
+- La leyenda "No existen solicitudes escaladas" es correcta: la base
+  realmente no tiene ningún caso en ESCALADO.
+- El backend y el frontend del supervisor están bien implementados, sin
+  bugs de filtro, de fecha ni de supervisor_responsable_id.
+- La causa raíz está en la pantalla del técnico: la acción de escalar existe
+  técnicamente pero no tiene un botón propio, ni motivo obligatorio, ni
+  longitud mínima, ni confirmación — por lo que en la práctica nunca se usó.
+- La pantalla de escalamientos del supervisor, además, no muestra prioridad
+  ni el motivo del escalamiento en la tabla (sí los trae el DTO/vista, pero
+  no se pintan todas las columnas pedidas).
+
+Lo que se implementa a continuación: botón "Escalar" dedicado en la pantalla
+del técnico con motivo obligatorio (mínimo 20 caracteres) y confirmación, y
+se completan las columnas de la tabla de escalamientos del supervisor
+(prioridad y motivo). El filtro del backend no se tocó porque ya funciona
+correctamente.

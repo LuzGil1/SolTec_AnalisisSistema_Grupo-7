@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="soltec-diagram-gen" version="24.0.0">
+  <diagram name="5. Secuencia" id="diagid_1">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2650" pageHeight="3270" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ll_cliente" value="Cliente" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="160" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_componente" value="Componente Angular&#10;(NuevaSolicitudComponent /&#10;MisCasosComponent)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_svcng" value="Servicio Angular&#10;(CasoService /&#10;TecnicoCasoService)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="580" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_controller" value="Controller&#10;(ClienteCasoController /&#10;TecnicoCasoController)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="860" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_service" value="Service&#10;(CasoServiceImpl /&#10;TecnicoCasoServiceImpl)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_repo" value="Repository&#10;(CasoRepository)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_pg" value="PostgreSQL&#10;(triggers y funciones)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1700" y="20" width="200" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="ll_tecnico" value="Técnico" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;size=50;fontStyle=1;fontSize=11;fillColor=#DAE8FC;strokeColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="1960" y="20" width="160" height="3170" as="geometry" />
+        </mxCell>
+        <mxCell id="sec140" value="1) Cliente registra la solicitud → el sistema la asigna automáticamente" style="text;html=1;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="135" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m1" value="completa el formulario y presiona &quot;Enviar&quot;" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="185" as="sourcePoint" />
+            <mxPoint x="300" y="185" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="registrar(solicitud)" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="245" as="sourcePoint" />
+            <mxPoint x="580" y="245" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="POST /api/cliente/casos" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="305" as="sourcePoint" />
+            <mxPoint x="860" y="305" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="CasoServiceImpl.registrar()" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="365" as="sourcePoint" />
+            <mxPoint x="1140" y="365" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="casoRepository.save(caso)" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="425" as="sourcePoint" />
+            <mxPoint x="1420" y="425" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m6" value="INSERT INTO caso" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1620" y="485" as="sourcePoint" />
+            <mxPoint x="1700" y="485" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note1" value="&lt;b&gt;tg_caso_before_insert&lt;/b&gt; (BEFORE INSERT)&lt;br&gt;→ fn_caso_before_insert():&lt;br&gt;asigna numero_boleta, estado_id según&lt;br&gt;tipo_solicitud.estado_inicial_id&lt;br&gt;(EN_COLA / EN_REVISION / EN_BACKLOG),&lt;br&gt;prioridad_id y fechas límite de SLA." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="535" width="420" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge1" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="590" as="sourcePoint" />
+            <mxPoint x="2150" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note2" value="&lt;b&gt;tg_caso_marcar_involucrado&lt;/b&gt; (AFTER INSERT)&lt;br&gt;→ fn_caso_marcar_involucrado():&lt;br&gt;si es denuncia, marca conflicto de interés." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="665" width="420" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge2" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="705" as="sourcePoint" />
+            <mxPoint x="2150" y="705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note3" value="&lt;b&gt;tg_caso_after_insert&lt;/b&gt; (AFTER INSERT)&lt;br&gt;→ fn_asignar_solicitud():&lt;br&gt;si el caso entró a EN_COLA, calcula&lt;br&gt;fn_calcular_score() por técnico disponible,&lt;br&gt;asigna al mejor técnico (estado → ASIGNADO),&lt;br&gt;inserta asignacion y seguimiento, y llama&lt;br&gt;fn_registrar_bitacora()." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="765" width="420" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge3" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="825" as="sourcePoint" />
+            <mxPoint x="2150" y="825" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m7" value="caso creado (con numero_boleta y estado)" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1700" y="915" as="sourcePoint" />
+            <mxPoint x="1620" y="915" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m8" value="Caso" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1420" y="975" as="sourcePoint" />
+            <mxPoint x="1340" y="975" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m9" value="CasoCreadoDTO" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="1035" as="sourcePoint" />
+            <mxPoint x="1060" y="1035" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m10" value="201 Created + CasoCreadoDTO" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="1095" as="sourcePoint" />
+            <mxPoint x="780" y="1095" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m11" value="Observable&lt;CasoCreadoDTO&gt;" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="1155" as="sourcePoint" />
+            <mxPoint x="500" y="1155" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m12" value="confirmación con número de boleta" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="1215" as="sourcePoint" />
+            <mxPoint x="220" y="1215" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note4" value="Barrido de respaldo: cada 5 min,&lt;br&gt;&lt;b&gt;AsignacionAutomaticaScheduler&lt;/b&gt;.&lt;br&gt;procesarBolsaDeDemanda() llama a&lt;br&gt;&lt;b&gt;fn_procesar_bolsa()&lt;/b&gt; (ordena por&lt;br&gt;fn_score_solicitud DESC) para asignar&lt;br&gt;los casos que quedaron en EN_COLA&lt;br&gt;sin técnico disponible al momento del INSERT." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="1265" width="420" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge4" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="1330" as="sourcePoint" />
+            <mxPoint x="2150" y="1330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sec1425" value="2) El técnico atiende el caso asignado" style="text;html=1;fontStyle=1;fontSize=13;align=left;verticalAlign=middle;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="40" y="1420" width="900" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="m13" value="abre &quot;Mis casos&quot;" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="1470" as="sourcePoint" />
+            <mxPoint x="500" y="1470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m14" value="listarMisCasos()" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="1530" as="sourcePoint" />
+            <mxPoint x="580" y="1530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m15" value="GET /api/tecnico/casos" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="1590" as="sourcePoint" />
+            <mxPoint x="860" y="1590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m16" value="TecnicoCasoServiceImpl.listarAsignadosActuales()" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="1650" as="sourcePoint" />
+            <mxPoint x="1140" y="1650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m17" value="casoRepository.findAsignadosActivos()" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="1710" as="sourcePoint" />
+            <mxPoint x="1420" y="1710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m18" value="SELECT ... FROM caso WHERE tecnico_asignado_id = ?" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1620" y="1770" as="sourcePoint" />
+            <mxPoint x="1700" y="1770" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m19" value="filas de caso asignado" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1700" y="1830" as="sourcePoint" />
+            <mxPoint x="1620" y="1830" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m20" value="List&lt;Caso&gt;" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1420" y="1890" as="sourcePoint" />
+            <mxPoint x="1340" y="1890" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m21" value="List&lt;CasoTecnicoResumenDTO&gt;" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="1950" as="sourcePoint" />
+            <mxPoint x="1060" y="1950" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m22" value="200 OK + lista" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="2010" as="sourcePoint" />
+            <mxPoint x="780" y="2010" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m23" value="Observable&lt;lista&gt;" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="2070" as="sourcePoint" />
+            <mxPoint x="500" y="2070" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m24" value="muestra la lista de casos" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="2130" as="sourcePoint" />
+            <mxPoint x="1960" y="2130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m25" value="registra avance / resuelve el caso" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1960" y="2190" as="sourcePoint" />
+            <mxPoint x="500" y="2190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m26" value="registrarAvance(id, avance)" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="2250" as="sourcePoint" />
+            <mxPoint x="580" y="2250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m27" value="POST /api/tecnico/casos/{id}/avance" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="2310" as="sourcePoint" />
+            <mxPoint x="860" y="2310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m28" value="TecnicoCasoServiceImpl.registrarAvance()" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1060" y="2370" as="sourcePoint" />
+            <mxPoint x="1140" y="2370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note5" value="Valida el mapa TRANSICIONES: el nuevo&lt;br&gt;estado debe estar permitido para el&lt;br&gt;estado actual del caso (p. ej. ASIGNADO&lt;br&gt;→ EN_PROCESO/RESUELTO/ESCALADO/&lt;br&gt;IMPROCEDENTE)." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="2420" width="420" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge5" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="2465" as="sourcePoint" />
+            <mxPoint x="2150" y="2465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m29" value="UPDATE caso (estado, solucion, fechas)&#10;+ guarda Seguimiento" style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1340" y="2540" as="sourcePoint" />
+            <mxPoint x="1420" y="2540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m30" value="UPDATE caso SET estado_id = ..." style="edgeStyle=none;rounded=0;html=1;endArrow=block;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1620" y="2600" as="sourcePoint" />
+            <mxPoint x="1700" y="2600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="note6" value="&lt;b&gt;tg_caso_after_update_liberar&lt;/b&gt; (AFTER UPDATE,&lt;br&gt;si cambia estado_id o tecnico_asignado_id)&lt;br&gt;→ si el caso queda en estado final o el&lt;br&gt;técnico quedó libre, reasigna el siguiente&lt;br&gt;caso en EN_COLA vía fn_asignar_solicitud(),&lt;br&gt;ordenado por fn_score_solicitud()." style="shape=note;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=9;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;size=14;" vertex="1" parent="1">
+          <mxGeometry x="2150" y="2650" width="420" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="nedge6" value="" style="edgeStyle=none;dashed=1;endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1900" y="2705" as="sourcePoint" />
+            <mxPoint x="2150" y="2705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m31" value="ok" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1700" y="2790" as="sourcePoint" />
+            <mxPoint x="1620" y="2790" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m32" value="ok" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1420" y="2850" as="sourcePoint" />
+            <mxPoint x="1340" y="2850" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m33" value="AvanceDTO" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1140" y="2910" as="sourcePoint" />
+            <mxPoint x="1060" y="2910" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m34" value="200 OK + AvanceDTO" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="2970" as="sourcePoint" />
+            <mxPoint x="780" y="2970" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m35" value="Observable&lt;AvanceDTO&gt;" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="580" y="3030" as="sourcePoint" />
+            <mxPoint x="500" y="3030" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m36" value="confirma avance registrado (caso cerrado)" style="edgeStyle=none;rounded=0;html=1;endArrow=open;dashed=1;fontSize=10;align=center;verticalAlign=bottom;labelBackgroundColor=#FFFFFF;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="3090" as="sourcePoint" />
+            <mxPoint x="1960" y="3090" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

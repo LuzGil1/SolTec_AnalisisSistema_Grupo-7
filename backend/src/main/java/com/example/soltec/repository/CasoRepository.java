@@ -121,7 +121,7 @@ public interface CasoRepository extends JpaRepository<Caso, Integer> {
 
     // CU Revision de Escalamientos: la mas proxima a vencer primero
     @Query(value = """
-            SELECT caso_id AS casoId, numero_boleta AS numeroBoleta, tipo, asunto, cliente,
+            SELECT caso_id AS casoId, numero_boleta AS numeroBoleta, tipo, asunto, cliente, prioridad,
                    escalada_por AS escaladaPor, motivo_escalamiento AS motivoEscalamiento,
                    fecha_escalamiento AS fechaEscalamiento, estado_codigo AS estadoCodigo, estado,
                    supervisor_responsable_id AS supervisorResponsableId,
@@ -135,6 +135,7 @@ public interface CasoRepository extends JpaRepository<Caso, Integer> {
     // no este en vw_escalamientos, p. ej. uno devuelto o concluido)
     @Query(value = """
             SELECT c.id AS casoId, c.numero_boleta AS numeroBoleta, NULL AS tipo, c.asunto, NULL AS cliente,
+                   NULL AS prioridad,
                    u.nombres || ' ' || u.apellidos AS escaladaPor, s.comentario AS motivoEscalamiento,
                    s.fecha AS fechaEscalamiento, NULL AS estadoCodigo, NULL AS estado,
                    c.supervisor_responsable_id AS supervisorResponsableId,
