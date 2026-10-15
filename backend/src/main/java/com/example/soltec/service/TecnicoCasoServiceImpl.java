@@ -61,6 +61,7 @@ public class TecnicoCasoServiceImpl implements TecnicoCasoService {
     private static final Set<String> LIBERA_CAPACIDAD = Set.of("CERRADO", "IMPROCEDENTE", "ESCALADO");
     private static final String CODIGO_RESUELTO = "RESUELTO";
     private static final String CODIGO_ESCALADO = "ESCALADO";
+    private static final int MOTIVO_ESCALAMIENTO_MINIMO = 20;
 
     private final CasoRepository casoRepository;
     private final ClienteRepository clienteRepository;
@@ -199,6 +200,11 @@ public class TecnicoCasoServiceImpl implements TecnicoCasoService {
             if (!permitidas.contains(nuevoCodigo)) {
                 throw new SolicitudInvalidaException(
                         "No se puede pasar de " + estadoActual.getNombre() + " a ese estado.");
+            }
+            if (CODIGO_ESCALADO.equals(nuevoCodigo)
+                    && request.getComentario().trim().length() < MOTIVO_ESCALAMIENTO_MINIMO) {
+                throw new SolicitudInvalidaException(
+                        "El motivo del escalamiento debe tener al menos " + MOTIVO_ESCALAMIENTO_MINIMO + " caracteres.");
             }
             nuevoEstado = estadoCasoRepository.findByCodigo(nuevoCodigo)
                     .orElseThrow(() -> new SolicitudInvalidaException("El estado indicado no existe"));
