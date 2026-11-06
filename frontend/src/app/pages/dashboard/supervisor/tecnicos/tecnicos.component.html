@@ -54,9 +54,6 @@
                     <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">Disponible</span>
                   } @else {
                     <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-fuchsia-100 text-fuchsia-700">No disponible</span>
-                    @if (tecnico.motivoNoDisponible) {
-                      <p class="text-xs text-brand-text-muted mt-1.5 max-w-[14rem]">{{ tecnico.motivoNoDisponible }}</p>
-                    }
                   }
                 </td>
                 <td class="px-6 py-4">
@@ -97,12 +94,7 @@
       @if (accion === 'noDisponible') {
         <h2 class="text-xl font-bold text-brand-text-dark mb-4">Marcar a {{ seleccionado.nombre }} como no disponible</h2>
 
-        <div class="rounded-2xl bg-amber-50 border border-amber-200 px-4 py-3 mb-5">
-          <p class="text-sm text-amber-800">
-            Los casos que tiene asignados y que aún no ha resuelto regresarán a la bolsa de demanda y el sistema los
-            redistribuirá entre los demás técnicos. No recibirá solicitudes nuevas hasta que lo marque disponible otra vez.
-          </p>
-        </div>
+       
 
         <label for="motivo" class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">Motivo</label>
         <textarea id="motivo" rows="3" [(ngModel)]="motivo" [maxlength]="maxMotivo"
@@ -135,11 +127,7 @@
         <input id="capacidad" type="number" min="1" step="1" [(ngModel)]="capacidad"
                class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark focus:outline-none focus:border-brand-purple transition-colors" />
 
-        @if (reduceCapacidad) {
-          <p class="text-xs text-brand-text-muted mt-2">
-            El técnico conserva los casos que ya tiene; solo dejará de recibir nuevos hasta que su carga baje de la nueva capacidad.
-          </p>
-        }
+       
       }
 
       @if (errorModal) {

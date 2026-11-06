@@ -1,0 +1,60 @@
+.contenido { max-width: 80rem; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; color: #2E1065; }
+h1 { font-size: 31px; font-weight: 700; color: #6D28D9; margin-bottom: 7px; }
+.subtitulo { font-size: 14.5px; color: #5B4A72; }
+.etiqueta { font-size: 11px; font-weight: 600; color: #6B5B82; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.encabezado { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.acciones { display: flex; gap: 9px; flex-wrap: wrap; }
+.btn { height: 42px; padding: 0 17px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; }
+.btn-claro { border: 1px solid #DCCBEF; background: #fff; color: #6D28D9; }
+.btn-lleno { border: none; background: #7C1FC4; color: #fff; }
+.error { color: #BE123C; font-size: 14px; }
+
+.panel, .tarjeta, .kpi { background: #fff; border: 1px solid #EDE4F7; }
+.panel { border-radius: 16px; padding: 18px 22px; }
+.cabeza { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.resumen { font-size: 13.5px; color: #5B4A72; }
+.resumen strong { color: #2E1065; font-weight: 600; }
+.cuerpo-filtros, .config { margin-top: 18px; display: flex; flex-direction: column; gap: 16px; }
+.config { border-top: 1px solid #F3ECFA; padding-top: 18px; }
+.fila, .barra { display: flex; flex-wrap: wrap; gap: 14px; }
+.barra { margin-bottom: 18px; }
+.campo { flex: 1 1 185px; min-width: 0; display: flex; flex-direction: column; }
+.campo.ancho { flex: 2 1 300px; }
+select, input[type=text], input[type=date] { width: 100%; height: 42px; border: 1px solid #DCCBEF; border-radius: 9px; padding: 0 11px; font-size: 14px; color: #2E1065; background: #fff; }
+option:disabled { color: #B9ADC9; }
+.banderas, .casillas { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.banderas label, .casillas label { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: #3D3151; cursor: pointer; }
+.banderas input, .casillas input { width: 16px; height: 16px; accent-color: #7C1FC4; }
+.pie-filtros { display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid #F3ECFA; padding-top: 14px; }
+.perfiles { display: flex; flex-wrap: wrap; gap: 8px; }
+.perfiles button { height: 36px; padding: 0 14px; border: 1px solid #DCCBEF; border-radius: 999px; background: #fff; font-size: 13px; font-weight: 500; color: #6D28D9; cursor: pointer; }
+
+.kpis, .variaciones { display: flex; flex-wrap: wrap; gap: 14px; }
+.kpi { flex: 1 1 190px; border-radius: 15px; padding: 16px 18px; }
+.kpi .valor { font-size: 26px; font-weight: 700; margin-top: 2px; }
+.kpi .spark { height: 34px; margin-top: 4px; }
+.kpi .var { font-size: 12.5px; font-weight: 600; margin-top: 2px; color: #5B4A72; }
+
+.rejilla { display: flex; flex-wrap: wrap; gap: 18px; }
+.tarjeta { border-radius: 16px; padding: 18px 20px 14px; flex: 1 1 430px; min-width: 0; display: flex; flex-direction: column; }
+.tarjeta.ancha { flex-basis: 100%; }
+.tarjeta h3 { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.forma { font-size: 11.5px; color: #6B5B82; font-family: ui-monospace, Menlo, monospace; margin-bottom: 10px; }
+.lienzo { height: 300px; width: 100%; }
+.lienzo.alto { height: 380px; }
+.sin-datos { padding: 110px 0; text-align: center; font-size: 14px; color: #6B5B82; }
+.nota { font-size: 12.5px; color: #6D28D9; margin-bottom: 8px; }
+.fuente { margin-top: 12px; font-size: 12px; color: #6B5B82; }
+
+.tabla-caja { max-height: 440px; overflow: auto; margin-top: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th { text-align: left; font-size: 11px; font-weight: 600; color: #6B5B82; letter-spacing: .4px; text-transform: uppercase; padding: 0 10px 9px 0; border-bottom: 1px solid #EDE4F7; }
+td { padding: 9px 10px 9px 0; border-bottom: 1px solid #F6F0FC; color: #3D3151; }
+.sem { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 7px; vertical-align: -1px; border: 1px solid #6E7B8B; }
+
+@media print {
+  .acciones, .panel, .no-imprimir { display: none !important; }
+  .tarjeta { border: 1px solid #ddd; break-inside: avoid; flex-basis: 48%; }
+  .tarjeta.ancha { flex-basis: 100%; }
+  .tabla-caja { max-height: none; overflow: visible; }
+}

@@ -1,0 +1,313 @@
+<div class="contenido">
+
+  <div class="encabezado">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="subtitulo">Indicadores y gráficas de la operación de soporte.</p>
+    </div>
+    <div class="acciones">
+      <button type="button" class="btn btn-claro" (click)="verConfiguracion = !verConfiguracion; verFiltros = false">Configurar</button>
+      <button type="button" class="btn btn-claro" (click)="imprimir()">Imprimir / PDF</button>
+      <button type="button" class="btn btn-lleno" (click)="descargarExcel()">Descargar Excel</button>
+    </div>
+  </div>
+
+  <!-- Filtros y configuracion -->
+  <div class="panel">
+    <div class="cabeza">
+      <div class="resumen">
+        Mostrando <strong>{{ totalSolicitudes }} solicitudes</strong> de <strong>{{ etiquetaPeriodo }}</strong>
+      </div>
+      <button type="button" class="btn btn-claro" (click)="verFiltros = !verFiltros; verConfiguracion = false">Filtros</button>
+    </div>
+
+    <div class="cuerpo-filtros" [hidden]="!verFiltros">
+      <div class="fila">
+        <div class="campo ancho" [hidden]="!filtroVisible('texto')">
+          <label class="etiqueta" for="f-texto">Buscar por boleta, asunto o descripción</label>
+          <input id="f-texto" type="text" [(ngModel)]="filtros.texto" placeholder="SOL-2026-900107, enlace..." />
+        </div>
+        <div class="campo">
+          <label class="etiqueta" for="f-periodo">Período</label>
+          <select id="f-periodo" [(ngModel)]="periodo">
+            @for (p of catalogo?.periodos ?? []; track p.clave) {
+              <option [ngValue]="p.clave">{{ p.nombre }}</option>
+            }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('desde')">
+          <label class="etiqueta" for="f-desde">Desde</label>
+          <input id="f-desde" type="date" [(ngModel)]="filtros.desde" />
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('hasta')">
+          <label class="etiqueta" for="f-hasta">Hasta</label>
+          <input id="f-hasta" type="date" [(ngModel)]="filtros.hasta" />
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('modoFecha')">
+          <label class="etiqueta" for="f-modo">Las fechas se aplican a</label>
+          <select id="f-modo" [(ngModel)]="filtros.modoFecha">
+            <option value="REGISTRO">Fecha de registro</option>
+            <option value="RESOLUCION">Fecha de resolución</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo" [hidden]="!filtroVisible('tipo')">
+          <label class="etiqueta" for="f-tipo">Tipo</label>
+          <select id="f-tipo" [(ngModel)]="filtros.tipo">
+            <option [ngValue]="null">Todos</option>
+            @for (o of opciones?.tipos ?? []; track o.codigo) { <option [ngValue]="o.codigo">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('prioridad')">
+          <label class="etiqueta" for="f-prioridad">Prioridad</label>
+          <select id="f-prioridad" [(ngModel)]="filtros.prioridad">
+            <option [ngValue]="null">Todas</option>
+            @for (o of opciones?.prioridades ?? []; track o.codigo) { <option [ngValue]="o.codigo">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('situacion')">
+          <label class="etiqueta" for="f-situacion">Situación</label>
+          <select id="f-situacion" [(ngModel)]="filtros.situacion">
+            <option [ngValue]="null">Todas</option>
+            @for (o of opciones?.situaciones ?? []; track o.codigo) { <option [ngValue]="o.codigo">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('servicioId')">
+          <label class="etiqueta" for="f-servicio">Servicio</label>
+          <select id="f-servicio" [(ngModel)]="filtros.servicioId" (ngModelChange)="recargarOpciones()">
+            <option [ngValue]="null">Todos</option>
+            @for (o of opciones?.servicios ?? []; track o.codigo) { <option [ngValue]="numeroDe(o.codigo)">{{ o.nombre }}</option> }
+          </select>
+        </div>
+      </div>
+
+      <div class="fila">
+        <div class="campo" [hidden]="!filtroVisible('especialidadId')">
+          <label class="etiqueta" for="f-especialidad">Especialidad</label>
+          <select id="f-especialidad" [(ngModel)]="filtros.especialidadId" (ngModelChange)="recargarOpciones()">
+            <option [ngValue]="null">Todas</option>
+            @for (o of opciones?.especialidades ?? []; track o.codigo) { <option [ngValue]="numeroDe(o.codigo)">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('tecnicoId')">
+          <label class="etiqueta" for="f-tecnico">Técnico</label>
+          <select id="f-tecnico" [(ngModel)]="filtros.tecnicoId">
+            <option [ngValue]="null">Todos</option>
+            @for (o of opciones?.tecnicos ?? []; track o.codigo) { <option [ngValue]="numeroDe(o.codigo)">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('clienteId')">
+          <label class="etiqueta" for="f-cliente">Cliente</label>
+          <select id="f-cliente" [(ngModel)]="filtros.clienteId">
+            <option [ngValue]="null">Todos</option>
+            @for (o of opciones?.clientes ?? []; track o.codigo) { <option [ngValue]="numeroDe(o.codigo)">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('supervisorId')">
+          <label class="etiqueta" for="f-supervisor">Supervisor responsable</label>
+          <select id="f-supervisor" [(ngModel)]="filtros.supervisorId">
+            <option [ngValue]="null">Todos</option>
+            @for (o of opciones?.supervisores ?? []; track o.codigo) { <option [ngValue]="numeroDe(o.codigo)">{{ o.nombre }}</option> }
+          </select>
+        </div>
+        <div class="campo" [hidden]="!filtroVisible('rolResponsable')">
+          <label class="etiqueta" for="f-rol">En manos de</label>
+          <select id="f-rol" [(ngModel)]="filtros.rolResponsable">
+            <option [ngValue]="null">Cualquiera</option>
+            @for (r of opciones?.roles ?? []; track r) { <option [ngValue]="r">{{ r }}</option> }
+          </select>
+        </div>
+      </div>
+
+      <div class="banderas">
+        @for (b of banderas; track b.id) {
+          <label [hidden]="!filtroVisible(b.id)">
+            <input type="checkbox" [ngModel]="filtrosDe(b.id)" (ngModelChange)="cambiarBandera(b.id, $event)" /> {{ b.titulo }}
+          </label>
+        }
+      </div>
+
+      <div class="pie-filtros">
+        <button type="button" class="btn btn-claro" (click)="limpiar()">Limpiar</button>
+        <button type="button" class="btn btn-lleno" (click)="aplicar()">Aplicar</button>
+      </div>
+    </div>
+
+    <div class="config" [hidden]="!verConfiguracion">
+      <div>
+        <span class="etiqueta">Perfiles</span>
+        <div class="perfiles">
+          <button type="button" (click)="aplicarPerfil('todo')">Todo</button>
+          <button type="button" (click)="aplicarPerfil('barras')">Solo barras</button>
+          <button type="button" (click)="aplicarPerfil('restaurar')">Restaurar</button>
+        </div>
+      </div>
+      <div>
+        <span class="etiqueta">Qué gráficas mostrar</span>
+        <div class="casillas">
+          @for (g of graficas; track g.id) {
+            <label><input type="checkbox" [checked]="visible(g.id)" (change)="alternarGrafica(g)" /> {{ g.titulo }}</label>
+          }
+        </div>
+      </div>
+      <div>
+        <span class="etiqueta">Qué filtros mostrar</span>
+        <div class="casillas">
+          @for (c of camposFiltro; track c.id) {
+            <label><input type="checkbox" [checked]="filtroVisible(c.id)" (change)="alternarFiltro(c.id)" /> {{ c.titulo }}</label>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  <!-- Indicadores -->
+  <div class="kpis">
+    @for (k of indicadores; track k.metrica; let i = $index) {
+      <div class="kpi">
+        <span class="etiqueta">{{ k.titulo }}</span>
+        <div class="valor" [style.color]="k.color">{{ valoresIndicador[k.metrica] ?? 'N/D' }}</div>
+        <div class="spark" [hidden]="!visible('sparklines')" echarts theme="soltec" [options]="sinOpciones" [initOpts]="opcionesInicio"
+             (chartInit)="alIniciar('spark_' + i, $event)"></div>
+        <div class="var">{{ variacionIndicador(k) }}</div>
+      </div>
+    }
+  </div>
+
+  <!-- Explorador: una sola grafica con selectores -->
+  <div class="tarjeta ancha explorador">
+    <div class="barra no-imprimir">
+      <div class="campo">
+        <label class="etiqueta" for="e-frecuente">Reportes frecuentes</label>
+        <select id="e-frecuente" [(ngModel)]="frecuente" (ngModelChange)="cambioFrecuente()">
+          @for (r of frecuentes; track r.texto; let i = $index) { <option [ngValue]="i">{{ r.texto }}</option> }
+        </select>
+      </div>
+      <div class="campo">
+        <label class="etiqueta" for="e-metrica">Qué medir</label>
+        <select id="e-metrica" [(ngModel)]="metrica" (ngModelChange)="cambioExplorador()">
+          @for (m of catalogo?.metricas ?? []; track m.clave) { <option [ngValue]="m.clave">{{ m.nombre }}</option> }
+        </select>
+      </div>
+      <div class="campo">
+        <label class="etiqueta" for="e-agrupacion">Agrupado por</label>
+        <select id="e-agrupacion" [(ngModel)]="agrupacion" (ngModelChange)="cambioExplorador()">
+          @for (a of catalogo?.agrupaciones ?? []; track a.clave) {
+            <option [ngValue]="a.clave" [disabled]="agrupacionDeshabilitada(a.clave)">{{ a.nombre }}</option>
+          }
+        </select>
+      </div>
+      <div class="campo" [hidden]="!tipoActual?.requiereSecundaria">
+        <label class="etiqueta" for="e-secundaria">Y también por</label>
+        <select id="e-secundaria" [(ngModel)]="agrupacionSecundaria" (ngModelChange)="cambioExplorador()">
+          @for (a of catalogo?.agrupaciones ?? []; track a.clave) {
+            <option [ngValue]="a.clave" [disabled]="secundariaDeshabilitada(a.clave)">{{ a.nombre }}</option>
+          }
+        </select>
+      </div>
+      <div class="campo">
+        <label class="etiqueta" for="e-tipo">Tipo de gráfica</label>
+        <select id="e-tipo" [(ngModel)]="tipoGrafica" (ngModelChange)="cambioExplorador()">
+          @for (t of tiposExplorador; track t.clave) {
+            <option [ngValue]="t.clave" [disabled]="tipoDeshabilitado(t)">{{ t.nombre }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <h3>{{ tituloExplorador }}</h3>
+    <div class="forma">{{ tipoActual?.forma }}</div>
+    @if (metricaActual?.ignoraPeriodo) {
+      <p class="nota">{{ notaCarga }}</p>
+    }
+    <p class="sin-datos" [hidden]="!sinDatos['explorador']">Sin datos con estos filtros</p>
+    <div class="lienzo" [hidden]="sinDatos['explorador']" echarts theme="soltec" [options]="sinOpciones" [initOpts]="opcionesInicio"
+         (chartInit)="alIniciar('explorador', $event)"></div>
+
+    <div class="tabla-caja">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ agrupacionActual?.nombre }}</th>
+            <th>{{ metricaActual?.corto }}</th>
+            @if (columnaPorcentaje) { <th>% del total</th> }
+          </tr>
+        </thead>
+        <tbody>
+          @for (f of filasExplorador; track f.categoria) {
+            <tr>
+              <td>{{ f.categoria }}</td>
+              <td>{{ f.valor }}</td>
+              @if (columnaPorcentaje) { <td>{{ f.porcentaje }}</td> }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="fuente">vw_reporte_solicitudes · {{ totalSolicitudes }} solicitudes · {{ periodoExplorador }}</div>
+  </div>
+
+  <!-- Graficas -->
+  <div class="rejilla">
+    @for (g of tarjetas; track g.id) {
+      <div class="tarjeta" [class.ancha]="g.ancha" [hidden]="!visible(g.id)" [attr.data-grafica]="g.id">
+        <h3>{{ g.titulo }}</h3>
+        <div class="forma">{{ g.forma }}</div>
+        @if (g.nota) {
+          <p class="nota">{{ g.nota }}</p>
+        }
+
+        @switch (g.vista) {
+          @case ('echarts') {
+            <p class="sin-datos" [hidden]="!sinDatos[g.id]">Sin datos con estos filtros</p>
+            <div class="lienzo" [class.alto]="g.ancha" [hidden]="sinDatos[g.id]" echarts theme="soltec" [options]="sinOpciones"
+                 [initOpts]="opcionesInicio" (chartInit)="alIniciar(g.id, $event)"></div>
+          }
+          @case ('variacion') {
+            <div class="variaciones">
+              @for (f of filasVariacion; track f.titulo) {
+                <div class="kpi">
+                  <span class="etiqueta">{{ f.titulo }}</span>
+                  <div class="valor">{{ f.valor }}</div>
+                  <div class="var">{{ f.texto }}</div>
+                </div>
+              }
+            </div>
+          }
+          @case ('tabla') {
+            <div class="tabla-caja">
+              <table>
+                <thead>
+                  <tr><th>Técnico</th><th>Carga</th><th>Resueltas</th><th>Horas promedio</th><th>SLA</th></tr>
+                </thead>
+                <tbody>
+                  @for (f of resultados[g.id]?.datos ?? []; track f.tecnico) {
+                    <tr>
+                      <td>{{ f.tecnico }}</td>
+                      <td>{{ f.carga }}</td>
+                      <td>{{ f.resueltas }}</td>
+                      <td>{{ f.horas === null ? 'N/D' : f.horas + ' h' }}</td>
+                      <td>
+                        <span class="sem" [style.background]="colorSemaforo(f.semaforo)"></span>
+                        {{ f.sla === null ? 'N/D' : f.sla + ' %' }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+          @case ('linea_tiempo') {
+            <app-trazabilidad />
+          }
+        }
+      </div>
+    }
+  </div>
+</div>

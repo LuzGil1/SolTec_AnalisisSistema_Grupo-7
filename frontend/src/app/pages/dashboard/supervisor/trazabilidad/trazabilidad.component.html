@@ -1,0 +1,54 @@
+<div [class.pantalla]="pantalla">
+  @if (pantalla) {
+    <h1>Trazabilidad de la solicitud</h1>
+    <p class="subtitulo">Toda la historia de una solicitud, incluida su bitácora de auditoría.</p>
+  }
+
+  <div class="buscador no-imprimir">
+    <input type="text" [(ngModel)]="boleta" (keyup.enter)="buscar()" aria-label="Número de boleta" placeholder="Número de boleta" />
+    <button type="button" class="btn" (click)="buscar()">Buscar</button>
+  </div>
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  @if (traza) {
+    <div class="datos-traza">
+      <span><strong>{{ traza.numeroBoleta }}</strong></span>
+      <span>{{ traza.tipo }}</span>
+      <span>Prioridad {{ traza.prioridad }}</span>
+      <span>{{ traza.situacion }}</span>
+      <span>{{ traza.cliente }}</span>
+      <span>{{ traza.tecnico ?? 'Sin técnico' }}</span>
+      <span>{{ traza.fechaRegistro | date: 'dd/MM/yyyy HH:mm' : '-0600' }}</span>
+      <span>SLA: {{ traza.cumplioSla === null ? 'en plazo o sin plazo' : traza.cumplioSla ? 'cumplido' : 'incumplido' }}</span>
+    </div>
+    <div class="integridad" [class.rota]="!traza.integridad.integra">
+      <strong>{{ traza.integridad.integra ? 'Cadena de bitácora íntegra' : 'La cadena de bitácora presenta alteraciones' }}</strong>
+      <span>{{ traza.integridad.mensaje }}</span>
+    </div>
+  }
+
+  <div class="lienzo" [hidden]="!traza" echarts theme="soltec" [options]="sinOpciones" [initOpts]="opcionesInicio"
+       (chartInit)="alIniciar($event)"></div>
+
+  @if (traza) {
+    <div class="eventos">
+      <table>
+        <thead><tr><th>Fecha</th><th>Origen</th><th>Usuario</th><th>Operación</th><th>Detalle</th></tr></thead>
+        <tbody>
+          @for (e of traza.eventos; track $index) {
+            <tr>
+              <td>{{ e.fecha | date: 'dd/MM/yyyy HH:mm' : '-0600' }}</td>
+              <td>{{ e.origen }}</td>
+              <td>{{ e.usuario }}</td>
+              <td>{{ e.operacion }}</td>
+              <td>{{ e.detalle }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

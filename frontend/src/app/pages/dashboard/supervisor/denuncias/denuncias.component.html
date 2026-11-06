@@ -121,7 +121,7 @@
         <label for="avanceDenuncia" class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wide mb-2">
           Avance de la gestión
         </label>
-        <textarea id="avanceDenuncia" rows="3" [(ngModel)]="avanceTexto"
+        <textarea id="avanceDenuncia" rows="3" maxlength="200" [(ngModel)]="avanceTexto"
                   placeholder="Describa la gestión realizada. Al resolver, este texto es la resolución que verá el cliente."
                   class="w-full rounded-2xl border-2 border-purple-100 bg-white/80 px-4 py-3 text-sm text-brand-text-dark placeholder:text-purple-300 focus:outline-none focus:border-brand-purple transition-colors resize-none"></textarea>
 

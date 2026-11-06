@@ -77,6 +77,18 @@
       <app-sugerencias />
     } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Técnicos') {
       <app-tecnicos />
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Dashboard') {
+      @defer {
+        <app-dashboard-graficas />
+      } @loading {
+        <p class="text-center text-brand-text-muted py-10">Cargando el dashboard...</p>
+      }
+    } @else if (rol === 'SUPERVISOR' && vistaActual() === 'Trazabilidad') {
+      @defer {
+        <app-trazabilidad [pantalla]="true" />
+      } @loading {
+        <p class="text-center text-brand-text-muted py-10">Cargando la trazabilidad...</p>
+      }
     }
   </main>
 

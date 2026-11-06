@@ -20,6 +20,26 @@ body {
   overflow-x: hidden;
 }
 
+[hidden] {
+  display: none !important;
+}
+
+// Impresion del dashboard: solo la pantalla que tiene las graficas
+@media print {
+  body:has(app-dashboard-graficas) {
+    background: #fff;
+
+    aside {
+      display: none !important;
+    }
+
+    main {
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+  }
+}
+
 // Subrayado estilo marcador grueso/suave, usado en los titulos principales
 .underline-marker {
   position: relative;
