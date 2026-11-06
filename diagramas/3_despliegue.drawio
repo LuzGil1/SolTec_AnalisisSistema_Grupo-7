@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="soltec-diagram-gen" version="24.0.0">
+  <diagram name="3. Despliegue" id="diagid_1">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1580" pageHeight="640" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="navegador" value="&amp;lt;&amp;lt;nodo&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Navegador del cliente&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;Aplicación Angular compilada&lt;/i&gt;&lt;br&gt;&lt;i&gt;(SPA) ejecutándose en el&lt;/i&gt;&lt;br&gt;&lt;i&gt;navegador web del usuario&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#333333;strokeWidth=2;fontSize=12;fontStyle=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="60" y="260" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="srv_angular" value="&amp;lt;&amp;lt;nodo&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Servidor Angular&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;ng serve / servidor de archivos&lt;/i&gt;&lt;br&gt;&lt;i&gt;estáticos (puerto 4200 por defecto)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#333333;strokeWidth=2;fontSize=12;fontStyle=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="420" y="260" width="280" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="srv_spring" value="&amp;lt;&amp;lt;nodo&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Servidor de aplicaciones&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;Spring Boot — soltec.jar&lt;/i&gt;&lt;br&gt;&lt;i&gt;(server.port = 8081)&lt;/i&gt;&lt;br&gt;&lt;i&gt;SoltecApplication&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#333333;strokeWidth=2;fontSize=12;fontStyle=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="800" y="240" width="300" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" value="&amp;lt;&amp;lt;nodo&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Motor de base de datos&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;PostgreSQL — esquema &quot;soltec&quot;&lt;/i&gt;&lt;br&gt;&lt;i&gt;(spring.datasource.url)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#333333;strokeWidth=2;fontSize=12;fontStyle=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="80" width="300" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="storage" value="&amp;lt;&amp;lt;nodo&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Almacenamiento de adjuntos&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;i&gt;Sistema de archivos local&lt;/i&gt;&lt;br&gt;&lt;i&gt;carpeta &quot;uploads&quot;&lt;/i&gt;&lt;br&gt;&lt;i&gt;(AlmacenamientoLocalServiceImpl)&lt;/i&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=center;verticalAlign=top;fillColor=#DAE8FC;strokeColor=#333333;strokeWidth=2;fontSize=12;fontStyle=1;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="380" width="300" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="HTTP&#10;(descarga del bundle Angular:&#10;index.html, JS, CSS)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=11;" edge="1" parent="1" source="navegador" target="srv_angular">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="e2" value="HTTP / REST (JSON)&#10;puerto 8081" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=11;" edge="1" parent="1" source="navegador" target="srv_spring">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="e3" value="JDBC&#10;(org.postgresql.Driver)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=11;" edge="1" parent="1" source="srv_spring" target="postgres">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="E/S de archivos&#10;(java.nio.file)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;startArrow=block;fontSize=11;" edge="1" parent="1" source="srv_spring" target="storage">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

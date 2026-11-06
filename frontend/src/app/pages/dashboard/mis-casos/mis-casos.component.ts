@@ -14,6 +14,8 @@ interface Vencimiento {
   clase: string;
 }
 
+const MOTIVO_ESCALAMIENTO_MINIMO = 20;
+
 @Component({
   selector: 'app-mis-casos',
   standalone: true,
@@ -38,6 +40,12 @@ export class MisCasosComponent implements OnInit {
   avanceTexto = '';
   avanceError = '';
   guardandoAvance = false;
+
+  escalando = false;
+  motivoEscalar = '';
+  errorEscalar = '';
+  guardandoEscalar = false;
+  readonly motivoEscalamientoMinimo = MOTIVO_ESCALAMIENTO_MINIMO;
 
   ngOnInit(): void {
     this.cargarListaYCarga(true);
@@ -114,6 +122,14 @@ export class MisCasosComponent implements OnInit {
     return { texto: `En ${dias} día${dias === 1 ? '' : 's'}`, clase: 'text-brand-text-dark' };
   }
 
+  get transicionesSinEscalar() {
+    return (this.detalleSeleccionado?.transicionesPermitidas ?? []).filter((t) => t.codigo !== 'ESCALADO');
+  }
+
+  get puedeEscalar(): boolean {
+    return (this.detalleSeleccionado?.transicionesPermitidas ?? []).some((t) => t.codigo === 'ESCALADO');
+  }
+
   abrirDetalle(casoId: number): void {
     this.casoIdSeleccionado = casoId;
     this.detalleCargando = true;
@@ -121,6 +137,7 @@ export class MisCasosComponent implements OnInit {
     this.detalleSeleccionado = null;
     this.avanceTexto = '';
     this.avanceError = '';
+    this.cancelarEscalar();
 
     this.tecnicoCasoService.obtenerDetalle(casoId).subscribe({
       next: (detalle) => {
@@ -141,7 +158,48 @@ export class MisCasosComponent implements OnInit {
     this.detalleError = false;
     this.avanceTexto = '';
     this.avanceError = '';
+    this.cancelarEscalar();
     this.limpiarPreviews();
+  }
+
+  abrirEscalar(): void {
+    this.escalando = true;
+    this.motivoEscalar = '';
+    this.errorEscalar = '';
+  }
+
+  cancelarEscalar(): void {
+    this.escalando = false;
+    this.motivoEscalar = '';
+    this.errorEscalar = '';
+  }
+
+  confirmarEscalar(): void {
+    const motivo = this.motivoEscalar.trim();
+    if (motivo.length < MOTIVO_ESCALAMIENTO_MINIMO) {
+      this.errorEscalar = `El motivo debe tener al menos ${MOTIVO_ESCALAMIENTO_MINIMO} caracteres.`;
+      return;
+    }
+    if (this.casoIdSeleccionado === null) {
+      return;
+    }
+
+    this.errorEscalar = '';
+    this.guardandoEscalar = true;
+
+    this.tecnicoCasoService
+      .registrarAvance(this.casoIdSeleccionado, { comentario: motivo, nuevoEstado: 'ESCALADO' })
+      .subscribe({
+        next: () => {
+          this.guardandoEscalar = false;
+          this.cargarListaYCarga();
+          this.cerrarDetalle();
+        },
+        error: (err) => {
+          this.guardandoEscalar = false;
+          this.errorEscalar = err?.error?.mensaje ?? 'No se pudo escalar la solicitud.';
+        },
+      });
   }
 
   esImagen(adjunto: AdjuntoDTO): boolean {

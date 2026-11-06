@@ -92,10 +92,12 @@ SELECT  c.id                                    AS caso_id,
         c.supervisor_responsable_id,
         us.nombres || ' ' || us.apellidos       AS supervisor_responsable,
         c.fecha_registro,
-        c.fecha_limite_resolucion               AS fecha_limite
+        c.fecha_limite_resolucion               AS fecha_limite,
+        p.nombre                                AS prioridad
 FROM caso c
 JOIN tipo_solicitud t ON t.id = c.tipo_solicitud_id
 JOIN estado_caso e    ON e.id = c.estado_id
+JOIN prioridad p      ON p.id = c.prioridad_id
 JOIN usuario uc       ON uc.id = c.cliente_id
 LEFT JOIN usuario us  ON us.id = c.supervisor_responsable_id
 LEFT JOIN LATERAL (

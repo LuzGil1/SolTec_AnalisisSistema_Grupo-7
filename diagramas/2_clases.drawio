@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" agent="soltec-diagram-gen" version="24.0.0">
+  <diagram name="2. Clases" id="diagid_1">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1280" pageHeight="1120" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="h1" value="Seguridad y usuarios" style="text;html=1;align=left;verticalAlign=middle;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="60" y="15" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" value="Catálogos" style="text;html=1;align=left;verticalAlign=middle;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="420" y="15" width="300" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" value="Casos (núcleo)" style="text;html=1;align=left;verticalAlign=middle;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="820" y="15" width="320" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Rol" value="&lt;b&gt;Rol&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- codigo: String&lt;br&gt;- nombre: String&lt;br&gt;- descripcion: String&lt;br&gt;- activo: Boolean" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="280" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario" value="&lt;b&gt;Usuario&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- nombres: String&lt;br&gt;- apellidos: String&lt;br&gt;- correo: String&lt;br&gt;- contrasenaHash: String&lt;br&gt;- telefono: String&lt;br&gt;- activo: Boolean&lt;br&gt;- fechaCreacion: OffsetDateTime" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="215" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="Cliente" value="&lt;b&gt;Cliente&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- usuarioId: Integer [PK, FK]&lt;br&gt;- nit: String&lt;br&gt;- direccion: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="415" width="280" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="Tecnico" value="&lt;b&gt;Tecnico&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- usuarioId: Integer [PK, FK]&lt;br&gt;- capacidadMaxima: Short&lt;br&gt;- disponible: Boolean&lt;br&gt;- motivoNoDisponible: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="60" y="540" width="280" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Servicio" value="&lt;b&gt;Servicio&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- nombre: String&lt;br&gt;- descripcion: String&lt;br&gt;- especialidadId: Integer&lt;br&gt;- activo: Boolean" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="60" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="Prioridad" value="&lt;b&gt;Prioridad&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- codigo: String&lt;br&gt;- nombre: String&lt;br&gt;- peso: BigDecimal&lt;br&gt;- orden: Short" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="215" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="EstadoCaso" value="&lt;b&gt;EstadoCaso&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- codigo: String&lt;br&gt;- nombre: String&lt;br&gt;- esFinal: Boolean&lt;br&gt;- orden: Short" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="370" width="300" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="TipoSolicitud" value="&lt;b&gt;TipoSolicitud&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- codigo: String&lt;br&gt;- nombre: String&lt;br&gt;- ingresaBolsa: Boolean&lt;br&gt;- requiereSla: Boolean&lt;br&gt;- requiereCasoPrevio: Boolean&lt;br&gt;- soloSupervisor: Boolean&lt;br&gt;- estadoInicialId: Integer&lt;br&gt;- prioridadDefaultId: Integer&lt;br&gt;- activo: Boolean" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="525" width="300" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="OrdenServicio" value="&lt;b&gt;OrdenServicio&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- numeroOrden: String&lt;br&gt;- clienteId: Integer&lt;br&gt;- tecnicoId: Integer&lt;br&gt;- fechaServicio: LocalDate&lt;br&gt;- descripcion: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="755" width="300" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="Parametro" value="&lt;b&gt;Parametro&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- clave: String [PK]&lt;br&gt;- valor: BigDecimal&lt;br&gt;- descripcion: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="925" width="300" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="Caso" value="&lt;b&gt;Caso&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- numeroBoleta: String&lt;br&gt;- clienteId: Integer&lt;br&gt;- casoRelacionadoId: Integer&lt;br&gt;- tecnicoAsignadoId: Integer&lt;br&gt;- asunto: String&lt;br&gt;- descripcion: String&lt;br&gt;- fechaRegistro: OffsetDateTime&lt;br&gt;- fechaLimiteRespuesta: OffsetDateTime&lt;br&gt;- fechaLimiteResolucion: OffsetDateTime&lt;br&gt;- fechaAsignacion: OffsetDateTime&lt;br&gt;- fechaResolucion: OffsetDateTime&lt;br&gt;- fechaCierre: OffsetDateTime&lt;br&gt;- solucion: String&lt;br&gt;- supervisorResponsableId: Integer" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="60" width="320" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="CasoInvolucrado" value="&lt;b&gt;CasoInvolucrado&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- casoId: Integer&lt;br&gt;- usuarioId: Integer&lt;br&gt;- motivo: String" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="365" width="320" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Seguimiento" value="&lt;b&gt;Seguimiento&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- casoId: Integer&lt;br&gt;- comentario: String&lt;br&gt;- visibleCliente: Boolean&lt;br&gt;- fecha: OffsetDateTime" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="505" width="320" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="Adjunto" value="&lt;b&gt;Adjunto&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;- id: Integer [PK]&lt;br&gt;- casoId: Integer&lt;br&gt;- seguimientoId: Integer&lt;br&gt;- nombreArchivo: String&lt;br&gt;- tipoMime: String&lt;br&gt;- tamanoBytes: Long&lt;br&gt;- ruta: String&lt;br&gt;- hashSha256: String&lt;br&gt;- usuarioId: Integer&lt;br&gt;- fechaCarga: OffsetDateTime" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=6;spacingRight=8;fillColor=#FFFFFF;strokeColor=#333333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="660" width="320" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="r1" value="N — 1  rol" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="Usuario" target="Rol">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r2" value="1 — 1  usuario (PK=FK)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="Cliente" target="Usuario">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r3" value="1 — 1  usuario (PK=FK)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=1;exitY=0.3;entryX=1;entryY=0.5;" edge="1" parent="1" source="Tecnico" target="Usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="350" y="570" />
+              <mxPoint x="350" y="295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r4" value="N — 1  servicio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=1;exitY=0.3;entryX=1;entryY=0.5;" edge="1" parent="1" source="OrdenServicio" target="Servicio">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="770" y="796" />
+              <mxPoint x="770" y="117" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r5" value="N — 1  clienteId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0;exitY=0.3;entryX=1;entryY=0.5;" edge="1" parent="1" source="OrdenServicio" target="Cliente">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="390" y="796" />
+              <mxPoint x="390" y="457" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r6" value="N — 1  tecnicoId (no expuesta)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0;exitY=0.7;entryX=1;entryY=0.5;" edge="1" parent="1" source="OrdenServicio" target="Tecnico">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="846" />
+              <mxPoint x="410" y="590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r7" value="N — 0..1  servicio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.2;entryX=1;entryY=0.46;" edge="1" parent="1" source="Caso" target="Servicio">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r8" value="N — 1  prioridad" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="Caso" target="Prioridad">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r9" value="N — 1  estado" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.65;entryX=1;entryY=0.5;" edge="1" parent="1" source="Caso" target="EstadoCaso">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r10" value="N — 1  tipoSolicitud" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.6;entryX=1;entryY=0.5;" edge="1" parent="1" source="Caso" target="TipoSolicitud">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="219" />
+              <mxPoint x="730" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r11" value="N — 0..1  ordenServicio" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.85;entryX=1;entryY=0.5;" edge="1" parent="1" source="Caso" target="OrdenServicio">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="750" y="285" />
+              <mxPoint x="750" y="820" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r12" value="0..1 — 1  casoRelacionadoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=1;exitY=0.15;entryX=1;entryY=0.35;" edge="1" parent="1" source="Caso" target="Caso">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1200" y="100" />
+              <mxPoint x="1200" y="153" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r13" value="N — 1  clienteId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.125;exitY=1;entryX=0.107;entryY=1;" edge="1" parent="1" source="Caso" target="Cliente">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="860" y="1040" />
+              <mxPoint x="90" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r14" value="N — 0..1  tecnicoAsignadoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.406;exitY=1;entryX=0.25;entryY=1;" edge="1" parent="1" source="Caso" target="Tecnico">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="950" y="1040" />
+              <mxPoint x="130" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r15" value="N — 0..1  supervisorResponsableId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.6875;exitY=1;entryX=0.393;entryY=1;" edge="1" parent="1" source="Caso" target="Usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="1040" />
+              <mxPoint x="170" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r16" value="N — 1  usuarioId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.25;exitY=1;entryX=0.536;entryY=1;" edge="1" parent="1" source="CasoInvolucrado" target="Usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="1040" />
+              <mxPoint x="210" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r17" value="N — 1  usuario" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0.5;exitY=1;entryX=0.679;entryY=1;" edge="1" parent="1" source="Seguimiento" target="Usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="980" y="1040" />
+              <mxPoint x="250" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r18" value="N — 1  usuarioId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.75;exitY=1;entryX=0.821;entryY=1;" edge="1" parent="1" source="Adjunto" target="Usuario">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1060" y="1040" />
+              <mxPoint x="290" y="1040" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r19" value="N — 1  casoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="CasoInvolucrado" target="Caso">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+        <mxCell id="r20" value="N — 1  casoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=1;exitY=0.3;entryX=1;entryY=0.2;" edge="1" parent="1" source="Seguimiento" target="Caso">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1160" y="539" />
+              <mxPoint x="1160" y="113" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r21" value="N — 0..1  estadoAnterior" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.3;entryX=1;entryY=0.5;" edge="1" parent="1" source="Seguimiento" target="EstadoCaso">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="539" />
+              <mxPoint x="790" y="427" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r22" value="N — 0..1  estadoNuevo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0;exitY=0.5;entryX=1;entryY=0.3;" edge="1" parent="1" source="Seguimiento" target="EstadoCaso">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="810" y="562" />
+              <mxPoint x="810" y="404" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r23" value="N — 1  casoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;dashed=1;strokeColor=#999999;fontColor=#666666;exitX=1;exitY=0.3;entryX=1;entryY=0.53;" edge="1" parent="1" source="Adjunto" target="Caso">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1180" y="719" />
+              <mxPoint x="1180" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r24" value="N — 0..1  seguimientoId" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=open;startArrow=none;endFill=0;fontSize=9;jettySize=20;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="Adjunto" target="Seguimiento">
+          <mxGeometry relative="1" as="geometry"></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

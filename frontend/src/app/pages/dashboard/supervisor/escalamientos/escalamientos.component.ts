@@ -10,6 +10,7 @@ import { Vencimiento, describirVencimiento } from '../../../../core/utils/tiempo
 import { DetalleCasoSupervisorComponent } from '../detalle-caso/detalle-caso.component';
 
 const CONCLUYEN = ['CERRADO', 'IMPROCEDENTE'];
+const ASUNTO_MAXIMO = 50;
 
 // CU Revision de Escalamientos. Desde ESCALADO el supervisor decide entre
 // devolver a la bolsa (FA01), atender el mismo (FA02) o declarar
@@ -59,6 +60,10 @@ export class EscalamientosComponent implements OnInit {
 
   vencimiento(escalamiento: EscalamientoResumenDTO): Vencimiento {
     return describirVencimiento(escalamiento.fechaLimite);
+  }
+
+  truncarAsunto(asunto: string): string {
+    return asunto.length > ASUNTO_MAXIMO ? asunto.slice(0, ASUNTO_MAXIMO) + '…' : asunto;
   }
 
   get estaEscalada(): boolean {

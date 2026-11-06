@@ -115,7 +115,6 @@ export interface EscalamientoResumenDTO {
   asunto: string;
   cliente: string;
   escaladaPor: string | null;
-  motivoEscalamiento: string | null;
   estadoCodigo: string;
   estado: string;
   enAtencionSupervisor: boolean;

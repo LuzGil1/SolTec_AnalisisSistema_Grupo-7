@@ -15,6 +15,8 @@ public interface EscalamientoProyeccion {
 
     String getCliente();
 
+    String getPrioridad();
+
     String getEscaladaPor();
 
     String getMotivoEscalamiento();

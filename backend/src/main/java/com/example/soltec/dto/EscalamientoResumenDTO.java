@@ -19,6 +19,7 @@ public class EscalamientoResumenDTO {
     private String tipo;
     private String asunto;
     private String cliente;
+    private String prioridad;
     private String escaladaPor;
     private String motivoEscalamiento;
     private String estadoCodigo;
